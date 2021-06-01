@@ -9,4 +9,5 @@ import java.util.*
 @Repository
 interface UserRepository : JpaRepository<User, BigInteger> {
     fun findByLoginAndPassword(login: String, password: String): Optional<User>
+    fun findByLogin(login: String): Optional<User>
 }

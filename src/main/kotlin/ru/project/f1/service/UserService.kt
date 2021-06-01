@@ -20,4 +20,6 @@ interface UserService {
     fun findAll(pageable: Pageable): Page<User>
 
     fun findByLoginAndPassword(login: String, password: String): Optional<User>
+
+    fun findByLogin(login: String): Optional<User>
 }

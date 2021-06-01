@@ -7,6 +7,7 @@ import ru.project.f1.entity.User
 import ru.project.f1.repository.UserRepository
 import ru.project.f1.service.UserService
 import java.math.BigInteger
+import java.util.*
 
 @Service
 class UserServiceImpl : UserService {
@@ -23,4 +24,6 @@ class UserServiceImpl : UserService {
     override fun findAll(pageable: Pageable) = userRepository.findAll(pageable)
 
     override fun findByLoginAndPassword(login: String, password: String) = userRepository.findByLoginAndPassword(login, password)
+
+    override fun findByLogin(login: String): Optional<User> = userRepository.findByLogin(login)
 }
