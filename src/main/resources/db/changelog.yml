@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog.yml
+
+  - include:
+      file: changelog/create_tables.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/insert_data.yml
+      relativeToChangelogFile: true

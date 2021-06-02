@@ -30,9 +30,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-    compile("com.github.mvysny.karibudsl:karibu-dsl:1.0.7")
+    implementation("com.github.mvysny.karibudsl:karibu-dsl:1.0.7")
     implementation("org.postgresql:postgresql:42.2.20")
-
+    implementation("org.liquibase:liquibase-core:4.0.0")
 }
 
 dependencyManagement {

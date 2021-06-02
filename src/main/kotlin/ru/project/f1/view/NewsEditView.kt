@@ -17,6 +17,7 @@ import com.vaadin.flow.router.RouteAlias
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
+import ru.project.f1.entity.User
 import ru.project.f1.service.NewsService
 import java.time.LocalDateTime
 
@@ -96,7 +97,7 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                             isEnabled = false
                             onLeftClick {
                                 val news = if (newId.isEmpty()) {
-                                    News("Mock author", LocalDateTime.now())
+                                    News(User("Mock author", ""), LocalDateTime.now())
                                 } else newsForEdit
                                 news.title = newsTitle.value
                                 news.text = newsText.value
