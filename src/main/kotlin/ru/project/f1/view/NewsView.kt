@@ -6,7 +6,6 @@ import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridSelectionModel
 import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -15,8 +14,8 @@ import com.vaadin.flow.router.Route
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.Post
-import ru.project.f1.service.PostService
+import ru.project.f1.entity.News
+import ru.project.f1.service.NewsService
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -25,13 +24,13 @@ import java.time.format.FormatStyle
 class NewsView : KComposite() {
 
     @Autowired
-    private lateinit var postService: PostService
-    private lateinit var grid: Grid<Post>
-    private val createdDateRef = Post::createdDate
+    private lateinit var newsService: NewsService
+    private lateinit var grid: Grid<News>
+    private val createdDateRef = News::createdDate
     private val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
     private var renderer = LocalDateTimeRenderer(createdDateRef, formatter)
-    private lateinit var editPostButton: Button
-    private lateinit var deletePostButton: Button
+    private lateinit var editNewsButton: Button
+    private lateinit var deleteNewsButton: Button
 
     val root = ui {
         verticalLayout {
@@ -69,15 +68,15 @@ class NewsView : KComposite() {
                     setSelectionMode(Grid.SelectionMode.SINGLE)
                     addSelectionListener {
                         it.firstSelectedItem.ifPresentOrElse({
-                            editPostButton.isEnabled = true
-                            deletePostButton.isEnabled = true
+                            editNewsButton.isEnabled = true
+                            deleteNewsButton.isEnabled = true
                         }, {
-                            editPostButton.isEnabled = false
-                            deletePostButton.isEnabled = false
+                            editNewsButton.isEnabled = false
+                            deleteNewsButton.isEnabled = false
                         })
                     }
                     flexGrow = 1.0
-                    addColumnFor(Post::title) {
+                    addColumnFor(News::title) {
                         isSortable = false
                     }
                     addColumnFor(createdDateRef, renderer) {
@@ -97,25 +96,25 @@ class NewsView : KComposite() {
                     width = "100%"
                     horizontalLayout {
                         width = "100%"
-                        button("Add post") {
+                        button("Add news") {
                             setPrimary()
                             onLeftClick {
                                 UI.getCurrent().navigate("news/add/")
                             }
                         }
-                        editPostButton = button("Edit post") {
+                        editNewsButton = button("Edit news") {
                             isEnabled = false
                             onLeftClick {
-                                val selectedPostId = grid.selectedItems.toList()[0].id
-                                UI.getCurrent().navigate("news/edit/${selectedPostId}")
+                                val selectedNewsId = grid.selectedItems.toList()[0].id
+                                UI.getCurrent().navigate("news/edit/${selectedNewsId}")
                             }
                         }
                     }
                     horizontalLayout {
-                        deletePostButton = button("Delete post") {
+                        deleteNewsButton = button("Delete news") {
                             isEnabled = false
                             onLeftClick {
-                                postService.deleteById(grid.selectedItems.toList()[0].id)
+                                newsService.deleteById(grid.selectedItems.toList()[0].id)
                                 Notification.show("News was be successfully deleted")
                             }
                         }
@@ -127,8 +126,8 @@ class NewsView : KComposite() {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
-        val posts = postService.findAll(PageRequest.of(0, 20))
-        grid.setItems(posts.toList().sortedWith(compareByDescending { it.createdDate }))
+        val news = newsService.findAll(PageRequest.of(0, 20))
+        grid.setItems(news.toList().sortedWith(compareByDescending { it.createdDate }))
     }
 
 }

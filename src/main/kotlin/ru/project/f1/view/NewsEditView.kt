@@ -16,8 +16,8 @@ import com.vaadin.flow.router.Route
 import com.vaadin.flow.router.RouteAlias
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.Post
-import ru.project.f1.service.PostService
+import ru.project.f1.entity.News
+import ru.project.f1.service.NewsService
 import java.time.LocalDateTime
 
 @Route("news/edit/:id?")
@@ -26,12 +26,12 @@ import java.time.LocalDateTime
 class NewsEditView : KComposite(), BeforeEnterObserver {
 
     @Autowired
-    private lateinit var postService: PostService
+    private lateinit var newsService: NewsService
     private lateinit var addNewsButton: Button
-    private lateinit var postTitle: TextField
-    private lateinit var postText: TextArea
+    private lateinit var newsTitle: TextField
+    private lateinit var newsText: TextArea
     private lateinit var newId: String
-    private lateinit var postForEdit: Post
+    private lateinit var newsForEdit: News
 
     val root = ui {
         verticalLayout {
@@ -70,20 +70,20 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                 height = "100%"
                 h1("Add news")
 
-                postTitle = textField {
+                newsTitle = textField {
                     width = "100%"
                     placeholder = "News title"
                     addKeyDownListener {
-                        if (!postText.isEmpty && !isEmpty) {
+                        if (!newsText.isEmpty && !isEmpty) {
                             addNewsButton.isEnabled = true
                         }
                     }
                 }
-                postText = textArea {
+                newsText = textArea {
                     setSizeFull()
                     placeholder = "News text"
                     addKeyDownListener {
-                        if (!isEmpty && !postTitle.isEmpty) {
+                        if (!isEmpty && !newsTitle.isEmpty) {
                             addNewsButton.isEnabled = true
                         }
                     }
@@ -95,12 +95,12 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                         addNewsButton = button("Save news") {
                             isEnabled = false
                             onLeftClick {
-                                val post = if (newId.isEmpty()) {
-                                    Post("Mock author", LocalDateTime.now())
-                                } else postForEdit
-                                post.title = postTitle.value
-                                post.text = postText.value
-                                postService.save(post)
+                                val news = if (newId.isEmpty()) {
+                                    News("Mock author", LocalDateTime.now())
+                                } else newsForEdit
+                                news.title = newsTitle.value
+                                news.text = newsText.value
+                                newsService.save(news)
                                 UI.getCurrent().navigate("news")
                             }
                         }
@@ -117,15 +117,15 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         if (newId.isNotBlank()) {
-            postService.findById(newId.toBigInteger()).ifPresent {
-                postForEdit = it
-                postTitle.value = it.title
-                postText.value = it.text
+            newsService.findById(newId.toBigInteger()).ifPresent {
+                newsForEdit = it
+                newsTitle.value = it.title
+                newsText.value = it.text
                 addNewsButton.isEnabled = true
             }
         } else {
-            postTitle.clear()
-            postText.clear()
+            newsTitle.clear()
+            newsText.clear()
         }
     }
 }

@@ -6,7 +6,6 @@ import com.vaadin.flow.component.Html
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H1
-import com.vaadin.flow.component.html.Paragraph
 import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
@@ -17,7 +16,7 @@ import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.Route
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.project.f1.service.PostService
+import ru.project.f1.service.NewsService
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -26,7 +25,7 @@ import java.time.format.FormatStyle
 class NewDetailView : KComposite(), BeforeEnterObserver {
 
     @Autowired
-    private lateinit var postService: PostService
+    private lateinit var newsService: NewsService
     private lateinit var newId: String
     private lateinit var title: H1
     private lateinit var timeSpan: Span
@@ -86,8 +85,8 @@ class NewDetailView : KComposite(), BeforeEnterObserver {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         if (newId.isNotEmpty()) {
-            val post = postService.findById(newId.toBigInteger())
-            post.ifPresent {
+            val news = newsService.findById(newId.toBigInteger())
+            news.ifPresent {
                 title.text = it.title
                 div.removeAll()
                 div.add(Html("<div><p>${it.text.replace("\n", "</p><p>")}</p></div>"))
