@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 import ru.project.f1.utils.UiUtils.Companion.setLocation
+import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 import java.time.LocalDateTime
 
 @Route("news/edit/:id?")

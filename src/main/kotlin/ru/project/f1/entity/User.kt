@@ -14,8 +14,12 @@ data class User(
     @field:NotBlank var login: String,
     @field:NotBlank private var password: String,
     @field:NotNull @Enumerated(EnumType.STRING) var role: Role
-): UserDetails {
-    constructor(userLogin: String, userPassword: String) : this(login = userLogin, password = userPassword, role = Role.USER)
+) : UserDetails {
+    constructor(userLogin: String, userPassword: String) : this(
+        login = userLogin,
+        password = userPassword,
+        role = Role.USER
+    )
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf(role)
 

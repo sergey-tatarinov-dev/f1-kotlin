@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.User
 import ru.project.f1.service.UserService
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
+import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 
 
 @Route("register")
