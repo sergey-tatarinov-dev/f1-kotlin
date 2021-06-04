@@ -1,7 +1,7 @@
 databaseChangeLog:
-  - logicalFilePath: db/changelog/create_tables.yml
+  - logicalFilePath: db/changelog/20210602_create_tables.yml
   - changeSet:
-      id: 20210602-create-tables
+      id: 20210602_create_tables
       author: Sergey Tatarinov
       changes:
         - createTable:

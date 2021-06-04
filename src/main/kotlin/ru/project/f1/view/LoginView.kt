@@ -1,119 +1,71 @@
 package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
-import com.vaadin.flow.component.textfield.PasswordField
-import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.router.PageTitle
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.server.PWA
+import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.User
-import ru.project.f1.service.UserService
-import java.math.BigInteger
-import java.security.MessageDigest
+import ru.project.f1.security.CustomRequestCache
+import ru.project.f1.utils.UiUtils.Companion.setLocation
+import ru.project.f1.utils.UiUtils.Companion.show
+import ru.project.f1.view.fragment.HeaderBarView.Companion.loginHeaderBar
 
-@Route("welcome-login")
+
+@Route("login")
 @Component
 @PWA(name = "F1 News", shortName = "F1")
+@PageTitle("Login | F1")
+@PreserveOnRefresh
+@UIScope
 class LoginView : KComposite() {
 
     @Autowired
-    private lateinit var userService: UserService
-    private lateinit var loginField: TextField
-    private lateinit var passwordField: PasswordField
+    lateinit var authenticationManager: AuthenticationManager
+    var requestCache = CustomRequestCache()
 
     val root = ui {
         verticalLayout {
             horizontalLayout {
-                width = "100%"
-                height = "40%"
-                menuBar {
-                    setSizeFull()
-                    addItem("News") {
-                        Notification.show("News")
-                        UI.getCurrent().navigate("news")
-                    }
-                    addItem("Championship Standings") {
-                        Notification.show("Championship Standings")
-                        UI.getCurrent().navigate("championship-standings")
-                    }
-                    addItem("Driver Standings") {
-                        Notification.show("Driver Standings")
-                        UI.getCurrent().navigate("driver-standings")
-                    }
-                }
-                menuBar {
-                    addItem("Login") {
-                        Notification.show("Login")
-                        UI.getCurrent().navigate("welcome-login")
-                    }
-                }
+                height = "20%"
+                loginHeaderBar { }
             }
             setSizeFull()
+            loginForm {
+                alignSelf = FlexComponent.Alignment.CENTER
+                action = "login"
+                addLoginListener {
+                    val authentication = authenticationManager.authenticate(
+                        UsernamePasswordAuthenticationToken(
+                            it.username,
+                            it.password
+                        )
+                    )
+                    if (authentication != null) {
+                        SecurityContextHolder.getContext().authentication = authentication
+                        val url = requestCache.resolveRedirectUrl()
+                        println(url)
+                        setLocation(url)
+                        show("goto $url")
+                    }
+
+                    Notification.show("Logged in")
+                }
+            }
             formLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
-                width = "40%"
-                loginField = textField("Login:") {
-                    placeholder = "Last name, first name"
-                }
-                passwordField = passwordField("Password:") {
-                    width = "5em"
-                    addKeyDownListener(::println)
-                }
+                width = "15%"
                 button("Register") {
-                    onLeftClick { register() }
-                }
-                button("Login") {
-                    setPrimary()
-                    onLeftClick { login() }
+                    onLeftClick { setLocation("/register") }
                 }
             }
         }
-    }
-
-    fun login() {
-        if (loginField.isEmpty || passwordField.isEmpty) {
-            Dialog().show("At least one of fields is empty")
-        } else {
-            userService.findByLoginAndPassword(loginField.value, passwordField.value.toMD5())
-                .ifPresentOrElse({
-                    loginField.clear()
-                    passwordField.clear()
-                    UI.getCurrent().navigate("news")
-                }, {
-                    Dialog().show("Wrong password or login")
-                })
-        }
-    }
-
-    fun register() {
-        if (loginField.isEmpty || passwordField.isEmpty) {
-            Dialog().show("At least one of fields is empty")
-        } else {
-            userService.findByLogin(loginField.value).ifPresentOrElse({
-                Dialog().show("User with this username is already registered")
-            }, {
-                val user = User(loginField.value, passwordField.value.toMD5())
-                userService.save(user)
-                loginField.clear()
-                passwordField.clear()
-            })
-        }
-    }
-
-    fun String.toMD5(): String {
-        val messageDigest = MessageDigest.getInstance("MD5")
-        messageDigest.update(this.toByteArray(), 0, this.length)
-        return BigInteger(1, messageDigest.digest()).toString(16)
-    }
-
-    fun Dialog.show(message: String) {
-        val dialog = Dialog()
-        dialog.add(message)
-        dialog.open()
     }
 }

@@ -2,28 +2,29 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.icon.Icon
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.router.BeforeEnterEvent
-import com.vaadin.flow.router.BeforeEnterObserver
-import com.vaadin.flow.router.Route
-import com.vaadin.flow.router.RouteAlias
+import com.vaadin.flow.router.*
+import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
-import ru.project.f1.entity.User
 import ru.project.f1.service.NewsService
+import ru.project.f1.utils.SecurityUtils.Companion.getUser
+import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.utils.UiUtils.Companion.setLocation
 import java.time.LocalDateTime
 
 @Route("news/edit/:id?")
 @RouteAlias(value = "news/add/")
 @Component
+@PageTitle("Edit news | F1")
+@PreserveOnRefresh
+@UIScope
+@Secured("MODERATOR", "ADMIN")
 class NewsEditView : KComposite(), BeforeEnterObserver {
 
     @Autowired
@@ -36,34 +37,7 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
 
     val root = ui {
         verticalLayout {
-            horizontalLayout {
-                width = "100%"
-                menuBar {
-                    setSizeFull()
-                    addItem(Icon(VaadinIcon.ARROW_CIRCLE_LEFT)) {
-                        Notification.show("News")
-                        UI.getCurrent().navigate("news")
-                    }
-                    addItem("News") {
-                        Notification.show("News")
-                        UI.getCurrent().navigate("news")
-                    }
-                    addItem("Championship Standings") {
-                        Notification.show("Championship Standings")
-                        UI.getCurrent().navigate("championship-standings")
-                    }
-                    addItem("Driver Standings") {
-                        Notification.show("Driver Standings")
-                        UI.getCurrent().navigate("driver-standings")
-                    }
-                }
-                menuBar {
-                    addItem("Login") {
-                        Notification.show("Login")
-                        UI.getCurrent().navigate("welcome-login")
-                    }
-                }
-            }
+            headerBar { }
             setSizeFull()
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
@@ -97,12 +71,12 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                             isEnabled = false
                             onLeftClick {
                                 val news = if (newId.isEmpty()) {
-                                    News(User("Mock author", ""), LocalDateTime.now())
+                                    News(getUser(), LocalDateTime.now())
                                 } else newsForEdit
                                 news.title = newsTitle.value
                                 news.text = newsText.value
                                 newsService.save(news)
-                                UI.getCurrent().navigate("news")
+                                setLocation("/news")
                             }
                         }
                     }

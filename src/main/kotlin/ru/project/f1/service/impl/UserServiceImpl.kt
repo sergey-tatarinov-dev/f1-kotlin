@@ -2,6 +2,7 @@ package ru.project.f1.service.impl
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import ru.project.f1.entity.User
 import ru.project.f1.repository.UserRepository
@@ -26,4 +27,8 @@ class UserServiceImpl : UserService {
     override fun findByLoginAndPassword(login: String, password: String) = userRepository.findByLoginAndPassword(login, password)
 
     override fun findByLogin(login: String): Optional<User> = userRepository.findByLogin(login)
+
+    override fun loadUserByUsername(username: String?): UserDetails = userRepository.findByLogin(username!!).orElseThrow {
+        RuntimeException("Cannot find user with this username")
+    }
 }

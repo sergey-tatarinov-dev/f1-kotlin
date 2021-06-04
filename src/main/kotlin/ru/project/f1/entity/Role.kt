@@ -1,7 +1,13 @@
 package ru.project.f1.entity
 
-enum class Role {
+import org.springframework.security.core.GrantedAuthority
+
+enum class Role: GrantedAuthority {
     ADMIN,
     MODERATOR,
-    USER
+    USER;
+
+    override fun getAuthority(): String {
+        return this.name
+    }
 }

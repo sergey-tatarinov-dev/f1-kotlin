@@ -2,12 +2,13 @@ package ru.project.f1.service
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.transaction.annotation.Transactional
 import ru.project.f1.entity.User
 import java.math.BigInteger
 import java.util.*
 
-interface UserService {
+interface UserService: UserDetailsService {
 
     @Transactional
     fun save(user: User): User

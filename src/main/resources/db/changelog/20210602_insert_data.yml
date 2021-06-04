@@ -1,7 +1,7 @@
 databaseChangeLog:
-  - logicalFilePath: db/changelog/create_tables.yml
+  - logicalFilePath: db/changelog/20210602_insert_data.yml
   - changeSet:
-      id: insert-example
+      id: 20210602_insert_data
       author: Sergey Tatarinov
       changes:
         - insert:

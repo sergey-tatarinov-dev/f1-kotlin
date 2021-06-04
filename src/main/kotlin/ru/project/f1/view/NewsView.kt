@@ -2,7 +2,6 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
@@ -10,17 +9,25 @@ import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
+import com.vaadin.flow.router.PageTitle
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
+import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
 import ru.project.f1.service.NewsService
+import ru.project.f1.utils.UiUtils.Companion.setLocation
+import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Route("news")
 @Component
+@PageTitle("News | F1")
+@PreserveOnRefresh
+@UIScope
 class NewsView : KComposite() {
 
     @Autowired
@@ -34,30 +41,7 @@ class NewsView : KComposite() {
 
     val root = ui {
         verticalLayout {
-            horizontalLayout {
-                width = "100%"
-                menuBar {
-                    setSizeFull()
-                    addItem("News") {
-                        Notification.show("News")
-                        UI.getCurrent().navigate("news")
-                    }
-                    addItem("Championship Standings") {
-                        Notification.show("Championship Standings")
-                        UI.getCurrent().navigate("championship-standings")
-                    }
-                    addItem("Driver Standings") {
-                        Notification.show("Driver Standings")
-                        UI.getCurrent().navigate("driver-standings")
-                    }
-                }
-                menuBar {
-                    addItem("Login") {
-                        Notification.show("Login")
-                        UI.getCurrent().navigate("welcome-login")
-                    }
-                }
-            }
+            headerBar { }
             setSizeFull()
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
@@ -84,7 +68,7 @@ class NewsView : KComposite() {
                         textAlign = ColumnTextAlign.END
                     }
                     addItemDoubleClickListener {
-                        UI.getCurrent().navigate("news/read/${it.item.id}")
+                        setLocation("/news/read/${it.item.id}")
                     }
                     addThemeVariants(
                         GridVariant.LUMO_NO_BORDER,
@@ -99,14 +83,14 @@ class NewsView : KComposite() {
                         button("Add news") {
                             setPrimary()
                             onLeftClick {
-                                UI.getCurrent().navigate("news/add/")
+                                setLocation("/news/add/")
                             }
                         }
                         editNewsButton = button("Edit news") {
                             isEnabled = false
                             onLeftClick {
                                 val selectedNewsId = grid.selectedItems.toList()[0].id
-                                UI.getCurrent().navigate("news/edit/${selectedNewsId}")
+                                setLocation("/news/edit/${selectedNewsId}")
                             }
                         }
                     }
@@ -123,6 +107,7 @@ class NewsView : KComposite() {
             }
         }
     }
+
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
