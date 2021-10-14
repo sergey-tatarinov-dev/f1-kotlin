@@ -30,9 +30,9 @@ class HeaderBarView {
                     Notification.show("News")
                     UiUtils.setLocation("/news")
                 }
-                addItem("Championship Standings") {
-                    Notification.show("Championship Standings")
-                    UiUtils.setLocation("/championship-standings")
+                addItem("Constructor Standings") {
+                    Notification.show("Constructor Standings")
+                    UiUtils.setLocation("/constructor-standings")
                 }
                 addItem("Driver Standings") {
                     Notification.show("Driver Standings")

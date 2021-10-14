@@ -14,7 +14,7 @@ import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 
 @Route("driver-standings")
 @Component
-@PageTitle("Driver standings | F1")
+@PageTitle("F1 | Driver standings")
 @PreserveOnRefresh
 @UIScope
 class DriverStandingsView : KComposite() {

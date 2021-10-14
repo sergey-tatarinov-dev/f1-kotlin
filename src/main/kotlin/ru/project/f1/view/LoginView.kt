@@ -21,8 +21,8 @@ import ru.project.f1.view.fragment.HeaderBarView.Companion.loginHeaderBar
 
 @Route("login")
 @Component
-@PWA(name = "F1 News", shortName = "F1")
-@PageTitle("Login | F1")
+@PWA(name = "F1 News", shortName = "F1", iconPath = "/img/icons/icon.png")
+@PageTitle("F1 | Login")
 @PreserveOnRefresh
 @UIScope
 class LoginView : KComposite() {

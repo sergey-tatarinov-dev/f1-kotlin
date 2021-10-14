@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20210607_add_created_date_to_comment.yml
+  - changeSet:
+      id: 20210602_insert_data
+      author: Sergey Tatarinov
+      changes:
+        addColumn:
+          tableName: comment
+          columns:
+            name: created_date
+            type: TIMESTAMP

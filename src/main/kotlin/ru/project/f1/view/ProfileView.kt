@@ -10,7 +10,7 @@ import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 
 @Route("profile/:login")
 @Component
-@PageTitle("Profile | F1")
+@PageTitle("F1 | Profile")
 @PreserveOnRefresh
 @UIScope
 class ProfileView : KComposite(), BeforeEnterObserver {

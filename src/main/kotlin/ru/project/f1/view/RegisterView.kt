@@ -20,7 +20,7 @@ import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 
 @Route("register")
 @Component
-@PageTitle("Register | F1")
+@PageTitle("F1 | Register")
 @PreserveOnRefresh
 @UIScope
 class RegisterView : KComposite() {

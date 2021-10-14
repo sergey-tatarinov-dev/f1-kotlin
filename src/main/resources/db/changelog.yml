@@ -8,3 +8,7 @@ databaseChangeLog:
   - include:
       file: changelog/20210602_insert_data.yml
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20210607_add_created_date_to_comment.yml
+      relativeToChangelogFile: true

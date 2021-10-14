@@ -8,7 +8,7 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import org.springframework.stereotype.Component
 import ru.project.f1.utils.SecurityUtils
 import ru.project.f1.view.LoginView
-import ru.project.f1.view.NewsView
+import ru.project.f1.view.NewsListView
 
 @Component
 class ConfigureUIServiceInitListener : VaadinServiceInitListener {
@@ -23,7 +23,7 @@ class ConfigureUIServiceInitListener : VaadinServiceInitListener {
     fun beforeEnter(event: BeforeEnterEvent) {
         if (!SecurityUtils.isAccessGranted(event.navigationTarget)) {
             if (SecurityUtils.isUserLoggedIn()) {
-                event.rerouteTo(NewsView::class.java)
+                event.rerouteTo(NewsListView::class.java)
             } else {
                 event.rerouteTo(LoginView::class.java)
             }

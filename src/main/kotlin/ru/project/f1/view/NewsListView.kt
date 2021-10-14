@@ -2,16 +2,23 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.Key
+import com.vaadin.flow.component.Shortcuts
+import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
+import com.vaadin.flow.router.RouteAlias
+import com.vaadin.flow.server.Command
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -23,21 +30,25 @@ import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-@Route("news")
+
+@Route("")
+@RouteAlias(value = "/news")
 @Component
-@PageTitle("News | F1")
+@PageTitle("F1 | News")
 @PreserveOnRefresh
 @UIScope
-class NewsView : KComposite() {
+class NewsListView : KComposite() {
 
     @Autowired
     private lateinit var newsService: NewsService
     private lateinit var grid: Grid<News>
+    private lateinit var editNewsButton: Button
+    private lateinit var deleteNewsButton: Button
+    private lateinit var news: MutableList<News>
     private val createdDateRef = News::createdDate
     private val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
     private var renderer = LocalDateTimeRenderer(createdDateRef, formatter)
-    private lateinit var editNewsButton: Button
-    private lateinit var deleteNewsButton: Button
+    private val comparatorForGrid: Comparator<News> = compareByDescending { it.createdDate }
 
     val root = ui {
         verticalLayout {
@@ -98,8 +109,29 @@ class NewsView : KComposite() {
                         deleteNewsButton = button("Delete news") {
                             isEnabled = false
                             onLeftClick {
-                                newsService.deleteById(grid.selectedItems.toList()[0].id)
-                                Notification.show("News was be successfully deleted")
+                                val dialog = Dialog()
+                                val horizontalLayout = HorizontalLayout(Text("Are you sure you want to delete the news?"))
+                                horizontalLayout.height = "75%"
+                                horizontalLayout.width = "90%"
+                                horizontalLayout.alignItems = FlexComponent.Alignment.CENTER
+                                dialog.add(horizontalLayout)
+                                val cancelButton = Button("Cancel") { dialog.close() }
+                                val confirmButton = Button("Confirm")
+                                confirmButton.setPrimary()
+                                confirmButton.addClickListener {
+                                    deleteNews(grid.selectedItems.toList()[0])
+                                    dialog.close()
+                                }
+                                Shortcuts.addShortcutListener(dialog, Command { dialog.close() }, Key.ESCAPE)
+                                dialog.height = "20%"
+                                dialog.isCloseOnEsc = false
+                                dialog.isCloseOnOutsideClick = false
+                                val hl1 = HorizontalLayout(cancelButton)
+                                hl1.width = "75%"
+                                val hl2 = HorizontalLayout(confirmButton)
+                                val buttonsLayout = HorizontalLayout(hl1, hl2)
+                                dialog.add(buttonsLayout)
+                                dialog.open()
                             }
                         }
                     }
@@ -111,8 +143,15 @@ class NewsView : KComposite() {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
-        val news = newsService.findAll(PageRequest.of(0, 20))
-        grid.setItems(news.toList().sortedWith(compareByDescending { it.createdDate }))
+        news = newsService.findAll(PageRequest.of(0, 20)).toMutableList()
+        grid.setItems(news.sortedWith(comparatorForGrid))
+    }
+
+    fun deleteNews(selectedNews: News) {
+        newsService.deleteById(selectedNews.id)
+        news.remove(selectedNews)
+        grid.setItems(news.sortedWith(comparatorForGrid))
+        Notification.show("News was be successfully deleted")
     }
 
 }

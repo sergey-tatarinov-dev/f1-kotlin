@@ -12,12 +12,12 @@ import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.stereotype.Component
 import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
 
-@Route("championship-standings")
+@Route("constructor-standings")
 @Component
-@PageTitle("Championship standings | F1")
+@PageTitle("F1 | Constructor standings")
 @PreserveOnRefresh
 @UIScope
-class ChampionshipStandingsView : KComposite() {
+class ConstructorStandingsView : KComposite() {
 
     val root = ui {
         verticalLayout {
@@ -26,7 +26,7 @@ class ChampionshipStandingsView : KComposite() {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                h1("Championship Standings")
+                h1("Constructor Standings")
             }
         }
     }
