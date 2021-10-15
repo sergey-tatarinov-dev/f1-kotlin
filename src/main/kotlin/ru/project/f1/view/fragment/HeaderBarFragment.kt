@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import ru.project.f1.utils.SecurityUtils
 import ru.project.f1.utils.UiUtils
 
-class HeaderBarView {
+class HeaderBarFragment {
 
     companion object {
         @VaadinDsl
