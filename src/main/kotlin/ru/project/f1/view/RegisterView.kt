@@ -15,7 +15,7 @@ import ru.project.f1.entity.User
 import ru.project.f1.service.UserService
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 
 @Route("register")

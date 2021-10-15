@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.security.CustomRequestCache
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.view.fragment.HeaderBarView.Companion.loginHeaderBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.loginHeaderBar
 
 
 @Route("login")

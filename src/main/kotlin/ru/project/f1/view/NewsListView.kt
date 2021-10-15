@@ -2,31 +2,26 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Key
-import com.vaadin.flow.component.Shortcuts
-import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.router.RouteAlias
-import com.vaadin.flow.server.Command
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
 import ru.project.f1.service.NewsService
+import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -109,29 +104,9 @@ class NewsListView : KComposite() {
                         deleteNewsButton = button("Delete news") {
                             isEnabled = false
                             onLeftClick {
-                                val dialog = Dialog()
-                                val horizontalLayout = HorizontalLayout(Text("Are you sure you want to delete the news?"))
-                                horizontalLayout.height = "75%"
-                                horizontalLayout.width = "90%"
-                                horizontalLayout.alignItems = FlexComponent.Alignment.CENTER
-                                dialog.add(horizontalLayout)
-                                val cancelButton = Button("Cancel") { dialog.close() }
-                                val confirmButton = Button("Confirm")
-                                confirmButton.setPrimary()
-                                confirmButton.addClickListener {
+                                customDialog("Are you sure you want to delete the news?") {
                                     deleteNews(grid.selectedItems.toList()[0])
-                                    dialog.close()
                                 }
-                                Shortcuts.addShortcutListener(dialog, Command { dialog.close() }, Key.ESCAPE)
-                                dialog.height = "20%"
-                                dialog.isCloseOnEsc = false
-                                dialog.isCloseOnOutsideClick = false
-                                val hl1 = HorizontalLayout(cancelButton)
-                                hl1.width = "75%"
-                                val hl2 = HorizontalLayout(confirmButton)
-                                val buttonsLayout = HorizontalLayout(hl1, hl2)
-                                dialog.add(buttonsLayout)
-                                dialog.open()
                             }
                         }
                     }

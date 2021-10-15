@@ -6,8 +6,6 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.data.binder.Setter
 import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +16,7 @@ import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.time.LocalDateTime
 
 @Route("news/edit/:id?")
