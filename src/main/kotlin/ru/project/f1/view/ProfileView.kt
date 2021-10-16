@@ -28,10 +28,10 @@ class ProfileView : KComposite(), BeforeEnterObserver {
                 val user = getUser()
                 textField("Login") {
                     value = user.login
-                    width = "100%"
+                    setWidthFull()
                 }
                 button("Change password") {
-                    width = "100%"
+                    setWidthFull()
                 }
             }
         }

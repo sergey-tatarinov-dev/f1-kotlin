@@ -47,10 +47,10 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                height = "100%"
+                setWidthFull()
                 title = h1("")
                 newsTitle = textField {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "News title"
                 }
                 newsText = textArea {
@@ -58,8 +58,8 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                     placeholder = "News text"
                 }
                 horizontalLayout {
-                    width = "100%"
-                    horizontalLayout { width = "100%" }
+                    setWidthFull()
+                    horizontalLayout { setWidthFull() }
                     horizontalLayout {
                         saveNewsButton = button("Save news") {
                             onLeftClick {

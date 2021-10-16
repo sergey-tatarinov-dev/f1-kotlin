@@ -68,8 +68,8 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                 width = "65%"
 
                 horizontalLayout {
-                    width = "100%"
-                    title = h1 { width = "100%" }
+                    setWidthFull()
+                    title = h1 { setWidthFull() }
                     timeSpan = span { width = "15%" }
                 }
                 newsBlock = div { }
@@ -77,7 +77,7 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                 commentsTitle = h3 { }
                 commentsBlock = div { setWidthFull() }
                 commentsField = textField {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "Enter your comment"
                     isEnabled = isUserLoggedIn()
                     addValueChangeListener {

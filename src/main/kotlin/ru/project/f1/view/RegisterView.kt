@@ -39,15 +39,15 @@ class RegisterView : KComposite() {
                 width = "17%"
                 h2("Register")
                 loginField = textField("Login:") {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "Enter login"
                 }
                 passwordField = passwordField("Password:") {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "Enter password"
                 }
                 button("Register") {
-                    width = "100%"
+                    setWidthFull()
                     setPrimary()
                     onLeftClick { register() }
                 }

@@ -23,7 +23,7 @@ class HeaderBarFragment {
         @VaadinDsl
         fun (@VaadinDsl HasComponents).loginHeaderBar(block: HorizontalLayout.() -> Unit = {}): HorizontalLayout {
             val layout: HorizontalLayout = HorizontalLayout().apply {
-                width = "100%"
+                setWidthFull()
                 navBar { }
             }
             return init(layout, block)
@@ -52,7 +52,7 @@ class HeaderBarFragment {
         @VaadinDsl
         fun (@VaadinDsl HasComponents).headerBar(block: HorizontalLayout.() -> Unit = {}): HorizontalLayout {
             val layout: HorizontalLayout = HorizontalLayout().apply {
-                width = "100%"
+                setWidthFull()
                 navBar { }
                 menuBar {
                     if (SecurityUtils.isUserLoggedIn()) {
