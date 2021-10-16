@@ -18,4 +18,14 @@ interface NewsService {
     fun deleteById(id: BigInteger)
 
     fun findAll(pageable: Pageable): Page<News>
+
+    fun findAllBySuggestedAndDeleted(suggested: Boolean, deleted: Boolean, pageable: Pageable): Page<News>
+
+    fun countAllBySuggested(suggested: Boolean): Int
+
+    @Transactional
+    fun publish(id: BigInteger)
+
+    @Transactional
+    fun refuse(id: BigInteger)
 }

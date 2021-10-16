@@ -14,7 +14,9 @@ data class News(
     @field:NotBlank var title: String = "",
     @field:NotBlank var text: String = "s",
     @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "author_id") var author: User,
-    @field:PastOrPresent var createdDate: LocalDateTime
+    @field:PastOrPresent var createdDate: LocalDateTime,
+    var suggested: Boolean = false,
+    var deleted: Boolean = false
 ) {
     constructor(newsAuthor: User, newsCreatedDate: LocalDateTime) : this(
         author = newsAuthor,

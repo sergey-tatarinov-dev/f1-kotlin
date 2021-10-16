@@ -23,4 +23,13 @@ class NewsServiceImpl : NewsService {
     override fun deleteById(id: BigInteger): Unit = newsRepository.deleteById(id)
 
     override fun findAll(pageable: Pageable): Page<News> = newsRepository.findAll(pageable)
+
+    override fun findAllBySuggestedAndDeleted(suggested: Boolean, deleted: Boolean, pageable: Pageable): Page<News> =
+        newsRepository.findAllBySuggestedAndDeleted(suggested, deleted, pageable)
+
+    override fun countAllBySuggested(suggested: Boolean): Int = newsRepository.countAllBySuggested(suggested)
+
+    override fun publish(id: BigInteger) = newsRepository.publish(id)
+
+    override fun refuse(id: BigInteger) = newsRepository.refuse(id)
 }
