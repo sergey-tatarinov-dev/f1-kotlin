@@ -4,6 +4,8 @@ import com.github.mvysny.karibudsl.v10.VaadinDsl
 import com.github.mvysny.karibudsl.v10.init
 import com.github.mvysny.karibudsl.v10.menuBar
 import com.vaadin.flow.component.HasComponents
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.menubar.MenuBar
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
@@ -13,6 +15,11 @@ import ru.project.f1.utils.UiUtils
 class HeaderBarFragment {
 
     companion object {
+
+        fun (@VaadinDsl Button).setError() {
+            addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY)
+        }
+
         @VaadinDsl
         fun (@VaadinDsl HasComponents).loginHeaderBar(block: HorizontalLayout.() -> Unit = {}): HorizontalLayout {
             val layout: HorizontalLayout = HorizontalLayout().apply {

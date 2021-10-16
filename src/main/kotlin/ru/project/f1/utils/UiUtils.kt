@@ -13,7 +13,7 @@ class UiUtils {
 
     companion object {
 
-        fun customDialog(dialogMessage: String, block: Button.() -> Unit) {
+        fun customDialog(dialogMessage: String, action: Button.() -> Unit) {
             val dialog = Dialog().apply {
                 height = "20%"
                 isCloseOnEsc = false
@@ -37,7 +37,7 @@ class UiUtils {
                         button("Confirm") {
                             setPrimary()
                             onLeftClick {
-                                block()
+                                action()
                                 close()
                             }
                         }
@@ -46,6 +46,8 @@ class UiUtils {
             }
             dialog.open()
         }
+
+        fun reload() = UI.getCurrent().page.reload()
 
         fun setLocation(url: String) {
             UI.getCurrent().page.setLocation(url)

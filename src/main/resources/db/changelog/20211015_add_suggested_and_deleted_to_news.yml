@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211015_add_suggested_and_deleted_to_news.yml
+  - changeSet:
+      id: 20211015_add_suggested_and_deleted_to_news
+      author: Sergey Tatarinov
+      changes:
+        addColumn:
+          tableName: news
+          columns:
+            - column:
+                name: suggested
+                type: BOOLEAN
+                defaultValue: false
+            - column:
+                name: deleted
+                type: BOOLEAN
+                defaultValue: false

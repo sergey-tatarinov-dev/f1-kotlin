@@ -12,3 +12,7 @@ databaseChangeLog:
   - include:
       file: changelog/20210607_add_created_date_to_comment.yml
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211015_add_suggested_and_deleted_to_news.yml
+      relativeToChangelogFile: true

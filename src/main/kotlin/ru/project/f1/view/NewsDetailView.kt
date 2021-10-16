@@ -3,6 +3,7 @@ package ru.project.f1.view
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Html
+import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.html.*
 import com.vaadin.flow.component.icon.Icon
@@ -24,10 +25,12 @@ import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
 import ru.project.f1.utils.UiUtils.Companion.customDialog
+import ru.project.f1.utils.UiUtils.Companion.reload
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
 import ru.project.f1.utils.Utils.Companion.format
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.setError
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -49,8 +52,10 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
     private lateinit var commentsBlock: Div
     private lateinit var commentsTitle: H3
     private lateinit var commentsField: TextField
-    private lateinit var publishButton: Button
+    private lateinit var publishCommentButton: Button
     private lateinit var news: News
+    private var publishNewsButton: Button = Button().apply { isVisible = false }
+    private var refuseButton: Button = Button().apply { isVisible = false }
     private var selectedComment: Comment? = null
     private var formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)!!
 
@@ -68,6 +73,7 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                     timeSpan = span { width = "15%" }
                 }
                 newsBlock = div { }
+
                 commentsTitle = h3 { }
                 commentsBlock = div { setWidthFull() }
                 commentsField = textField {
@@ -75,10 +81,10 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                     placeholder = "Enter your comment"
                     isEnabled = isUserLoggedIn()
                     addValueChangeListener {
-                        publishButton.isEnabled = it.value.isNotEmpty()
+                        publishCommentButton.isEnabled = it.value.isNotEmpty()
                     }
                 }
-                publishButton = button("Publish") {
+                publishCommentButton = button("Publish") {
                     alignSelf = FlexComponent.Alignment.END
                     isEnabled = isUserLoggedIn()
                     setPrimary()
@@ -90,12 +96,12 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                                 commentService.save(selectedComment!!)
                                 selectedComment = null
                                 commentsField.clear()
-                                setLocation("/news/read/${newId}")
+                                reload()
                             } else if (commentText.isNotEmpty()) {
                                 commentService.save(Comment(text = commentText, author = getUser(), news = news))
                                 commentsField.clear()
                                 isEnabled = false
-                                setLocation("/news/read/${newId}")
+                                reload()
                             } else {
                                 show("Comment cannot be empty")
                             }
@@ -105,6 +111,24 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                     }
                 }
 
+                horizontalLayout {
+                    alignSelf = FlexComponent.Alignment.END
+                    refuseButton = button("Refuse") {
+                        setError()
+                        onLeftClick {
+                            newsService.refuse(newId.toBigInteger())
+                            setLocation("/news${if (newsService.countAllBySuggested(true) > 0) "/suggested" else ""}")
+                        }
+                    }
+                    publishNewsButton = button("Publish").apply {
+                        isVisible = true
+                        setPrimary()
+                        onLeftClick {
+                            newsService.publish(newId.toBigInteger())
+                            setLocation("/news${if (newsService.countAllBySuggested(true) > 0) "/suggested" else ""}")
+                        }
+                    }
+                }
             }
         }
     }
@@ -124,14 +148,25 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                 newsBlock.add(Html("<div><p>${it.text.replace("\n", "</p><p>")}</p></div>"))
                 timeSpan.text = it.createdDate.format(formatter)
                 news = it
-                commentsTitle.apply {
-                    text = "Comments (${commentService.countAllByNews(it)})"
-                    style.set("line-height", "0.5")
+                UI.getCurrent().page.setTitle(news.title)
+                listOf(commentsTitle, commentsBlock, commentsField, publishCommentButton)
+                    .forEach { component -> component.apply { isVisible = !news.suggested } }
+                listOf(refuseButton, publishNewsButton)
+                    .forEach { component -> component.apply { isVisible = news.suggested } }
+                if (!news.suggested) {
+                    commentsTitle.apply {
+                        text = "Comments (${commentService.countAllByNews(it)})"
+                        style.set("line-height", "0.5")
+                    }
+                    commentsBlock.removeAll()
+                    commentService.findAllByNews(it, PageRequest.of(0, 50))
+                        .sortedBy(Comment::createdDate)
+                        .forEach(this::addComment)
+                } else {
+                    if (!isUserLoggedIn()) {
+                        setLocation("/news")
+                    }
                 }
-                commentsBlock.removeAll()
-                commentService.findAllByNews(it, PageRequest.of(0, 50))
-                    .sortedBy(Comment::createdDate)
-                    .forEach(this::addComment)
             }
         }
     }
@@ -144,36 +179,15 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                     add(
                         horizontalLayout {
                             setWidthFull()
-                            add(
-                                createParagraph(comment.author.login).apply {
-                                    style.set("font-weight", "500")
-                                    style.set("margin-bottom", "0px")
-                                    width = "15%"
-                                }
-                            )
+                            add(createParagraph(comment.author.login).apply {
+                                style.set("font-weight", "500")
+                                style.set("margin-bottom", "0px")
+                                width = "15%"
+                            })
                         },
                         horizontalLayout {
                             if (isUserLoggedIn() && getUser() == comment.author) {
-                                add(
-                                    createButton(VaadinIcon.PENCIL) {
-                                        selectedComment = comment
-                                        commentsField.apply {
-                                            value = comment.text
-                                            isEnabled = true
-                                            focus()
-                                        }
-                                        publishButton.apply {
-                                            text = "Edit"
-                                            isEnabled = true
-                                        }
-
-                                    },
-                                    createButton(VaadinIcon.CLOSE) {
-                                        customDialog("Are you sure you want to delete the comment?") {
-                                            commentService.deleteById(comment.id)
-                                            setLocation("/news/read/${newId}")
-                                        }
-                                    })
+                                add(createEditButton(comment), createRemoveButton(comment))
                             }
                         })
                 },
@@ -186,6 +200,30 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
         }
     }
 
+    private fun createEditButton(comment: Comment): Icon {
+        return createButton(VaadinIcon.PENCIL) {
+            selectedComment = comment
+            commentsField.apply {
+                value = comment.text
+                isEnabled = true
+                focus()
+            }
+            publishCommentButton.apply {
+                text = "Edit"
+                isEnabled = true
+            }
+        }
+    }
+
+    private fun createRemoveButton(comment: Comment): Icon {
+        return createButton(VaadinIcon.CLOSE) {
+            customDialog("Are you sure you want to delete the comment?") {
+                commentService.deleteById(comment.id)
+                reload()
+            }
+        }
+    }
+
     private fun createParagraph(value: String): Paragraph {
         return Paragraph(value).apply {
             style.set("font-size", "18px")
@@ -194,13 +232,13 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
         }
     }
 
-    private fun createButton(vaadinIcon: VaadinIcon, block: Icon.() -> Unit): Icon {
+    private fun createButton(vaadinIcon: VaadinIcon, action: Icon.() -> Unit): Icon {
         return Icon(vaadinIcon).apply {
             style.set("height", "14px")
             style.set("padding-top", "7px")
             style.set("cursor", "pointer")
             addClickListener {
-                block()
+                action()
             }
         }
     }
