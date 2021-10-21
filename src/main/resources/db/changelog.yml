@@ -16,3 +16,39 @@ databaseChangeLog:
   - include:
       file: changelog/20211015_add_suggested_and_deleted_to_news.yml
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_track.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_team.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_driver.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_grand_prix.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_line_up.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_insert_grand_prix.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_functions_for_grand_prix_result.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_grand_prix_result.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_insert_grand_prix_result.sql
+      relativeToChangelogFile: true

@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211021_create_table_grand_prix_result.yml
+  - changeSet:
+      id: 20211021_create_grand_prix_result
+      author: Sergey Tatarinov
+      changes:
+        - createTable:
+            tableName: grand_prix_result
+            columns:
+              - column:
+                  name: grand_prix_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: driver_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: position
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: set_fastest_lap
+                  type: BOOLEAN
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: points
+                  type: NUMERIC (3, 1)
+
+        - addPrimaryKey:
+            tableName: grand_prix_result
+            columnNames: grand_prix_id, driver_id
