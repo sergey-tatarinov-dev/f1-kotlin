@@ -12,7 +12,7 @@ import javax.validation.constraints.PastOrPresent
 data class News(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: BigInteger = BigInteger.ZERO,
     @field:NotBlank var title: String = "",
-    @field:NotBlank var text: String = "s",
+    @field:NotBlank var text: String = "",
     @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "author_id") var author: User,
     @field:PastOrPresent var createdDate: LocalDateTime,
     var suggested: Boolean = false,

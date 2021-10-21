@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211016_create_table_team.yml
+  - changeSet:
+      id: 20211016_create_table_team
+      author: Sergey Tatarinov
+      changes:
+        - createTable:
+            tableName: team
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: full_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(60)
+                  constraints:
+                    nullable: false
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'MERCEDES-AMG PETRONAS FORMULA ONE TEAM'
+              - column:
+                  name: name
+                  value: 'Mercedes'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'RED BULL RACING'
+              - column:
+                  name: name
+                  value: 'Red Bull'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'MCLAREN RACING'
+              - column:
+                  name: name
+                  value: 'Mclaren'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'ASTON MARTIN COGNIZANT F1 TEAM'
+              - column:
+                  name: name
+                  value: 'Aston Martin'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'ALPINE F1 TEAM'
+              - column:
+                  name: name
+                  value: 'Alpine'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'SCUDERIA FERRARI MISSION WINNOW'
+              - column:
+                  name: name
+                  value: 'Ferrari'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'SCUDERIA ALPHATAURI HONDA'
+              - column:
+                  name: name
+                  value: 'Alpha Tauri'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'ALFA ROMEO RACING ORLEN'
+              - column:
+                  name: name
+                  value: 'Alfa Romeo'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'URALKALI HAAS F1 TEAM'
+              - column:
+                  name: name
+                  value: 'Haas'
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: team
+            columns:
+              - column:
+                  name: full_name
+                  value: 'WILLIAMS RACING'
+              - column:
+                  name: name
+                  value: 'Williams'

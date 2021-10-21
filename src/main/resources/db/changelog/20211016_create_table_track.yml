@@ -1,0 +1,450 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211016_create_table_track.yml
+  - changeSet:
+      id: 20211016_create_table_track
+      author: Sergey Tatarinov
+      changes:
+        - createTable:
+            tableName: track
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: circuit_name
+                  type: VARCHAR(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: length
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lap_count
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Melbourne Grand Prix Circuit'
+              - column:
+                  name: length
+                  value: 5303
+              - column:
+                  name: lap_count
+                  value: 58
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Bahrain International Circuit'
+              - column:
+                  name: length
+                  value: 5412
+              - column:
+                  name: lap_count
+                  value: 57
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Shanghai International Circuit'
+              - column:
+                  name: length
+                  value: 5451
+              - column:
+                  name: lap_count
+                  value: 56
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Baku City Circuit'
+              - column:
+                  name: length
+                  value: 6003
+              - column:
+                  name: lap_count
+                  value: 51
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit de Barcelona-Catalunya'
+              - column:
+                  name: length
+                  value: 4655
+              - column:
+                  name: lap_count
+                  value: 66
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit de Monaco'
+              - column:
+                  name: length
+                  value: 3337
+              - column:
+                  name: lap_count
+                  value: 78
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit Gilles Villeneuve'
+              - column:
+                  name: length
+                  value: 4361
+              - column:
+                  name: lap_count
+                  value: 70
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit Paul Ricard'
+              - column:
+                  name: length
+                  value: 5842
+              - column:
+                  name: lap_count
+                  value: 53
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Red Bull Ring'
+              - column:
+                  name: length
+                  value: 4318
+              - column:
+                  name: lap_count
+                  value: 71
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Silverstone Circuit'
+              - column:
+                  name: length
+                  value: 5891
+              - column:
+                  name: lap_count
+                  value: 52
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Hockenheimring'
+              - column:
+                  name: length
+                  value: 4574
+              - column:
+                  name: lap_count
+                  value: 67
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Hungaroring'
+              - column:
+                  name: length
+                  value: 4381
+              - column:
+                  name: lap_count
+                  value: 70
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit de Spa-Francorchamps'
+              - column:
+                  name: length
+                  value: 7004
+              - column:
+                  name: lap_count
+                  value: 44
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autodromo Nazionale di Monza'
+              - column:
+                  name: length
+                  value: 5793
+              - column:
+                  name: lap_count
+                  value: 53
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Marina Bay Street Circuit'
+              - column:
+                  name: length
+                  value: 5063
+              - column:
+                  name: lap_count
+                  value: 61
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Sochi Autodrom'
+              - column:
+                  name: length
+                  value: 5848
+              - column:
+                  name: lap_count
+                  value: 53
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Suzuka International Racing Course'
+              - column:
+                  name: length
+                  value: 5807
+              - column:
+                  name: lap_count
+                  value: 53
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autódromo Hermanos Rodríguez'
+              - column:
+                  name: length
+                  value: 4304
+              - column:
+                  name: lap_count
+                  value: 71
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit of the Americas'
+              - column:
+                  name: length
+                  value: 5513
+              - column:
+                  name: lap_count
+                  value: 56
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autódromo José Carlos Pace'
+              - column:
+                  name: length
+                  value: 4309
+              - column:
+                  name: lap_count
+                  value: 71
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Yas Marina Circuit'
+              - column:
+                  name: length
+                  value: 5554
+              - column:
+                  name: lap_count
+                  value: 55
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autodromo Internazionale del Mugello'
+              - column:
+                  name: length
+                  value: 5245
+              - column:
+                  name: lap_count
+                  value: 59
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Nurburgring'
+              - column:
+                  name: length
+                  value: 5148
+              - column:
+                  name: lap_count
+                  value: 60
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autódromo Internacional do Algarve'
+              - column:
+                  name: length
+                  value: 4653
+              - column:
+                  name: lap_count
+                  value: 66
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Autodromo Internazionale Enzo e Dino Ferrari'
+              - column:
+                  name: length
+                  value: 4909
+              - column:
+                  name: lap_count
+                  value: 63
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Istanbul Park'
+              - column:
+                  name: length
+                  value: 5338
+              - column:
+                  name: lap_count
+                  value: 58
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Bahrain International Circuit (short)'
+              - column:
+                  name: length
+                  value: 3543
+              - column:
+                  name: lap_count
+                  value: 87
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Circuit Zandvoort'
+              - column:
+                  name: length
+                  value: 4259
+              - column:
+                  name: lap_count
+                  value: 72
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Losail International Circuit'
+              - column:
+                  name: length
+                  value: 5380
+              - column:
+                  name: lap_count
+                  value: 57
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: track
+            columns:
+              - column:
+                  name: circuit_name
+                  value: 'Jeddah Corniche Circuit'
+              - column:
+                  name: length
+                  value: 6175
+              - column:
+                  name: lap_count
+                  value: 50

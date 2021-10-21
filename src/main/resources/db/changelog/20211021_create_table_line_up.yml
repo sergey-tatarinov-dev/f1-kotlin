@@ -1,0 +1,319 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211021_create_table_line_up.yml
+  - changeSet:
+      id: 20211021_create_line_up
+      author: Sergey Tatarinov
+      changes:
+        - createTable:
+            tableName: line_up
+            columns:
+              - column:
+                  name: team_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: driver_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: line_up
+            baseColumnNames: team_id
+            constraintName: fk_line_up_team_id
+            referencedTableName: team
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: line_up
+            baseColumnNames: driver_id
+            constraintName: fk_line_up_driver_id
+            referencedTableName: driver
+            referencedColumnNames: id
+
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 1
+              - column:
+                  name: driver_id
+                  value: 1
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 1
+              - column:
+                  name: driver_id
+                  value: 2
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 2
+              - column:
+                  name: driver_id
+                  value: 3
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 2
+              - column:
+                  name: driver_id
+                  value: 4
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 3
+              - column:
+                  name: driver_id
+                  value: 5
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 3
+              - column:
+                  name: driver_id
+                  value: 6
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 4
+              - column:
+                  name: driver_id
+                  value: 11
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 4
+              - column:
+                  name: driver_id
+                  value: 12
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 5
+              - column:
+                  name: driver_id
+                  value: 9
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 5
+              - column:
+                  name: driver_id
+                  value: 10
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 6
+              - column:
+                  name: driver_id
+                  value: 7
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 6
+              - column:
+                  name: driver_id
+                  value: 8
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 7
+              - column:
+                  name: driver_id
+                  value: 13
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 7
+              - column:
+                  name: driver_id
+                  value: 14
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 8
+              - column:
+                  name: driver_id
+                  value: 17
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 8
+              - column:
+                  name: driver_id
+                  value: 18
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 9
+              - column:
+                  name: driver_id
+                  value: 19
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 9
+              - column:
+                  name: driver_id
+                  value: 20
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 10
+              - column:
+                  name: driver_id
+                  value: 15
+        - insert:
+            catalogName: f1
+            dbms: 'postgresql'
+            tableName: line_up
+            columns:
+              - column:
+                  name: year
+                  value: 2021
+              - column:
+                  name: team_id
+                  value: 10
+              - column:
+                  name: driver_id
+                  value: 16
