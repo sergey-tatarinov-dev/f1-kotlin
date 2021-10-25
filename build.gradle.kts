@@ -35,6 +35,7 @@ dependencies {
     implementation("com.github.mvysny.karibudsl:karibu-dsl:1.0.7")
     implementation("org.postgresql:postgresql:42.2.20")
     implementation("org.liquibase:liquibase-core:4.0.0")
+    implementation("com.vladmihalcea:hibernate-types-52:2.12.0")
 }
 
 dependencyManagement {

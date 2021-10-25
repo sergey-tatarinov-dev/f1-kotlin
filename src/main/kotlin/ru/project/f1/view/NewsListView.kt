@@ -125,6 +125,7 @@ class NewsListView : KComposite() {
                                     onLeftClick {
                                         customDialog("Are you sure you want to delete the news?") {
                                             deleteNews(grid.selectedItems.toList()[0])
+                                            grid.refresh()
                                         }
                                     }
                                 }
