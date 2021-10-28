@@ -17,15 +17,15 @@ import javax.persistence.Table
 @Table(name = "team_standings_2021")
 @TypeDefs(
     TypeDef(name = "string-array", typeClass = StringArrayType::class),
-        TypeDef(name = "int-array", typeClass = IntArrayType::class),
-            TypeDef(name = "json", typeClass = JsonType::class)
+    TypeDef(name = "int-array", typeClass = IntArrayType::class),
+    TypeDef(name = "json", typeClass = JsonType::class)
 )
 data class TeamStanding(
     @Id
-    val id: Int,
-    val name: String,
-    val sum: Double,
+    override val id: Int,
+    override val name: String,
+    override val sum: Double,
     @Type(type = "json")
     @Column(columnDefinition = "jsonb")
-    val points: List<Double>,
-)
+    override val points: List<Double>,
+) : Standing()

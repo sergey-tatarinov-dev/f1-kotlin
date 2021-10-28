@@ -60,3 +60,23 @@ databaseChangeLog:
   - include:
       file: changelog/20211025_insert_american_grand_prix_result.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_create_table_file.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_insert_files_into_table.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_add_foreign_keys.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_insert_countries.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211028_add_not_null_constraints.yml
+      relativeToChangelogFile: true

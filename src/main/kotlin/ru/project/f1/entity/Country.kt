@@ -6,12 +6,10 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "track")
-data class Track(
+@Table(name = "country")
+data class Country(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) var id: BigInteger = BigInteger.ZERO,
-    @field:NotBlank var circuitName: String = "",
-    @field:NotBlank var length: Int = 0,
-    @field:NotBlank var lapCount: Int = 0,
-    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "country_id") var country: Country
+    @field:NotBlank var name: String = "",
+    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "file_id") var f1File: F1File
 )
