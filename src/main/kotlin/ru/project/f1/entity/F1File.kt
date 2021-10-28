@@ -3,14 +3,13 @@ package ru.project.f1.entity
 import java.math.BigInteger
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "team")
-data class Team(
+@Table(name = "file")
+data class F1File(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) var id: BigInteger = BigInteger.ZERO,
-    @field:NotBlank var fullName: String = "",
     @field:NotBlank var name: String = "",
-    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "country_id") var country: Country
+    @field:NotBlank var fullPath: String = "",
+    @field:NotBlank var extension: String = ""
 )

@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211027_create_table_file.yml
+  - changeSet:
+      id: 20211027_create_table_file
+      author: Sergey Tatarinov
+      changes:
+        - createTable:
+            tableName: file
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(80)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_path
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: extension
+                  type: VARCHAR(15)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: country
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false

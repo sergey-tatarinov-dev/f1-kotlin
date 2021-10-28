@@ -13,7 +13,8 @@ data class User(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: BigInteger = BigInteger.ZERO,
     @field:NotBlank var login: String,
     @field:NotBlank private var password: String,
-    @field:NotNull @Enumerated(EnumType.STRING) var role: Role
+    @field:NotNull @Enumerated(EnumType.STRING) var role: Role,
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "image_id") var userPic: F1File? = null
 ) : UserDetails {
     constructor(userLogin: String, userPassword: String) : this(
         login = userLogin,

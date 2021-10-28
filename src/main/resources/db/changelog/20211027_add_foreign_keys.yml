@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211027_add_foreign_keys.yml
+  - changeSet:
+      id: 20211027_add_foreign_keys
+      author: Sergey Tatarinov
+      changes:
+
+        - addColumn:
+            tableName: country
+            columns:
+              - column:
+                  name: file_id
+                  type: BIGINT
+
+        - addColumn:
+            tableName: driver
+            columns:
+              - column:
+                  name: country_id
+                  type: BIGINT
+
+        - addColumn:
+            tableName: team
+            columns:
+              - column:
+                  name: country_id
+                  type: BIGINT
+
+        - addColumn:
+            tableName: track
+            columns:
+              - column:
+                  name: country_id
+                  type: BIGINT
+
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: file_id
+                  type: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: grand_prix_result
+            baseColumnNames: grand_prix_id
+            constraintName: fk_grand_prix_result_grand_prix_id
+            referencedTableName: grand_prix
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: grand_prix_result
+            baseColumnNames: driver_id
+            constraintName: fk_grand_prix_result_driver_id
+            referencedTableName: driver
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: driver
+            baseColumnNames: country_id
+            constraintName: fk_driver_country_id
+            referencedTableName: country
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: team
+            baseColumnNames: country_id
+            constraintName: fk_team_country_id
+            referencedTableName: country
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: track
+            baseColumnNames: country_id
+            constraintName: fk_track_contry_id
+            referencedTableName: country
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: file_id
+            constraintName: fk_users_file_id
+            referencedTableName: file
+            referencedColumnNames: id
