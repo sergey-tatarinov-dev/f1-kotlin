@@ -80,3 +80,7 @@ databaseChangeLog:
   - include:
       file: changelog/20211028_add_not_null_constraints.yml
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211029_add_default_profile_picture.sql
+      relativeToChangelogFile: true

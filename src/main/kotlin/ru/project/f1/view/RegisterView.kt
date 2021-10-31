@@ -9,10 +9,10 @@ import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.User
 import ru.project.f1.service.UserService
+import ru.project.f1.utils.SecurityUtils.Companion.encode
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
@@ -62,7 +62,7 @@ class RegisterView : KComposite() {
             userService.findByLogin(loginField.value).ifPresentOrElse({
                 show("User with this username is already registered")
             }, {
-                val encodedPassword = BCryptPasswordEncoder(12).encode(passwordField.value)
+                val encodedPassword = encode(passwordField.value)
                 val user = User(loginField.value, encodedPassword)
                 userService.save(user)
                 loginField.clear()

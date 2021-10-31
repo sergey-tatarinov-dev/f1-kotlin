@@ -53,11 +53,12 @@ class ConstructorStandingsView : StandingView() {
                     }
                     select<String> {
                         label = "Year"
+                        setItems("2019", "2020", "2021")
                         value = "2021"
-                    }.setItems("2019", "2020", "2021")
+                    }
                 }
                 grid = grid {
-                    isHeightByRows = true
+                    isAllRowsVisible = true
                     setSelectionMode(Grid.SelectionMode.NONE)
                     addThemeVariants(
                         GridVariant.LUMO_NO_BORDER,
@@ -73,19 +74,21 @@ class ConstructorStandingsView : StandingView() {
         super.onAttach(attachEvent)
         grandPrixResultService.createViews()
         teamStandings = teamStandingsService.findAll(PageRequest.of(0, 25)).toMutableList()
-        grid.removeAllColumns()
-        grid.setItems(teamStandings)
-        grid.addColumns {
-            addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, teamStanding: TeamStanding ->
-                anchor.apply {
-                    text = teamStanding.name
-                    href = "/team/${teamStanding.id}"
-                }
-            }).setHeader("Name")
-            addColumnFor(
-                TeamStanding::sum,
-                NumberRenderer(TeamStanding::sum, NumberFormat.getNumberInstance())
-            )
+        grid.apply {
+            removeAllColumns()
+            setItems(teamStandings)
+            addColumns {
+                addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, teamStanding: TeamStanding ->
+                    anchor.apply {
+                        text = teamStanding.name
+                        href = "/team/${teamStanding.id}"
+                    }
+                }).setHeader("Name")
+                addColumnFor(
+                    TeamStanding::sum,
+                    NumberRenderer(TeamStanding::sum, NumberFormat.getNumberInstance())
+                )
+            }
         }
     }
 }

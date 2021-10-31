@@ -4,14 +4,35 @@ import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.Shortcuts
 import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.avatar.Avatar
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dialog.Dialog
+import com.vaadin.flow.component.html.Image
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.server.Command
+import com.vaadin.flow.server.InputStreamFactory
+import com.vaadin.flow.server.StreamResource
+import java.io.FileInputStream
 
 class UiUtils {
 
     companion object {
+
+        fun imageFromPath(src: String, alt: String): Image =
+            Image(
+                StreamResource(alt,
+                    InputStreamFactory {
+                        FileInputStream(src)
+                    }), alt
+            ).apply {
+                setWidthFull()
+            }
+
+        fun avatarFromPath(src: String, name: String): Avatar =
+            Avatar(name).apply {
+                imageResource = StreamResource(name, InputStreamFactory { FileInputStream(src) })
+                setWidthFull()
+            }
 
         fun customDialog(dialogMessage: String, action: Button.() -> Unit) {
             val dialog = Dialog().apply {

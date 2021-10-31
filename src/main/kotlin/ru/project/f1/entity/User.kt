@@ -14,7 +14,7 @@ data class User(
     @field:NotBlank var login: String,
     @field:NotBlank private var password: String,
     @field:NotNull @Enumerated(EnumType.STRING) var role: Role,
-    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "image_id") var userPic: F1File? = null
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "file_id") var userPic: F1File? = null
 ) : UserDetails {
     constructor(userLogin: String, userPassword: String) : this(
         login = userLogin,
@@ -25,6 +25,10 @@ data class User(
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf(role)
 
     override fun getPassword(): String = password
+
+    fun setPassword(password: String) {
+        this.password = password
+    }
 
     override fun getUsername(): String = login
 
