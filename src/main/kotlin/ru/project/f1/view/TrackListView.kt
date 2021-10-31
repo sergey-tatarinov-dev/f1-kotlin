@@ -13,11 +13,8 @@ import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.Driver
-import ru.project.f1.entity.News
 import ru.project.f1.entity.Track
 import ru.project.f1.service.TrackService
-import ru.project.f1.utils.UiUtils
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 @Route("tracks")
@@ -43,7 +40,7 @@ class TrackListView : KComposite() {
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
-                    isHeightByRows = true
+                    isAllRowsVisible = true
                     addColumnFor(Track::circuitName) {
                         isSortable = false
                     }

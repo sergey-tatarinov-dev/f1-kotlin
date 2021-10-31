@@ -21,14 +21,16 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.Comment
 import ru.project.f1.entity.News
 import ru.project.f1.service.CommentService
+import ru.project.f1.service.FileService
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
+import ru.project.f1.utils.UiUtils.Companion.avatarFromPath
 import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.reload
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.utils.Utils.Companion.format
+import ru.project.f1.utils.Utils.Companion.toFormatted
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.setError
 import java.time.format.DateTimeFormatter
@@ -45,6 +47,8 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
 
     @Autowired
     private lateinit var commentService: CommentService
+    @Autowired
+    private lateinit var fileService: FileService
     private lateinit var newId: String
     private lateinit var title: H1
     private lateinit var timeSpan: Span
@@ -173,29 +177,40 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
 
     private fun addComment(comment: Comment) {
         commentsBlock.apply {
+            val user = comment.author
+            val fileId = user.userPic?.id!!
+            val file = fileService.findById(fileId).orElseThrow().absolutePath
             add(
                 horizontalLayout {
-                    setWidthFull()
+                    alignItems = FlexComponent.Alignment.START
                     add(
-                        horizontalLayout {
-                            setWidthFull()
-                            add(createParagraph(comment.author.login).apply {
-                                style.set("font-weight", "500")
-                                style.set("margin-bottom", "0px")
-                                width = "15%"
-                            })
+                        avatarFromPath(file, user.login).apply {
+                            height = "30px"
+                            width = "30px"
+                            style.set("padding-top", "10px")
+                        },
+                        verticalLayout {
+                            add(
+                                createParagraph(user.login).apply {
+                                    style.apply {
+                                        set("font-weight", "500")
+                                        set("margin-bottom", "0px")
+                                    }
+                                    width = "15%"
+                                },
+                                createParagraph(comment.text),
+                                createParagraph(comment.createdDate.toFormatted()).apply {
+                                    style.set("font-size", "13px")
+                                }
+                            )
                         },
                         horizontalLayout {
-                            if (isUserLoggedIn() && getUser() == comment.author) {
+                            if (isUserLoggedIn() && getUser() == user) {
                                 add(createEditButton(comment), createRemoveButton(comment))
                             }
-                        })
-                },
-                createParagraph(comment.text),
-                createParagraph(format(comment.createdDate)).apply {
-                    style.set("font-size", "13px")
-                },
-                Html("<br>")
+                        }
+                    )
+                }
             )
         }
     }
@@ -226,17 +241,21 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
 
     private fun createParagraph(value: String): Paragraph {
         return Paragraph(value).apply {
-            style.set("font-size", "18px")
-            style.set("line-height", "0.5")
+            style.apply {
+                set("font-size", "18px")
+                set("line-height", "0.5")
+            }
             setWidthFull()
         }
     }
 
     private fun createButton(vaadinIcon: VaadinIcon, action: Icon.() -> Unit): Icon {
         return Icon(vaadinIcon).apply {
-            style.set("height", "14px")
-            style.set("padding-top", "7px")
-            style.set("cursor", "pointer")
+            style.apply {
+                set("height", "14px")
+                set("padding-top", "10px")
+                set("cursor", "pointer")
+            }
             addClickListener {
                 action()
             }

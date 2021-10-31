@@ -2,7 +2,6 @@ package ru.project.f1.entity
 
 import java.math.BigInteger
 import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull

@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 @PageTitle("F1 | Edit news")
 @PreserveOnRefresh
 @UIScope
-@Secured("USER","MODERATOR", "ADMIN")
+@Secured("USER", "MODERATOR", "ADMIN")
 class NewsEditView : KComposite(), BeforeEnterObserver {
 
     @Autowired

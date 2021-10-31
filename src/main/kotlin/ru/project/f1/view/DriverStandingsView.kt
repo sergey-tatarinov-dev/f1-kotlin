@@ -61,11 +61,12 @@ class DriverStandingsView : StandingView() {
                     }
                     select<String> {
                         label = "Year"
+                        setItems("2019", "2020", "2021")
                         value = "2021"
-                    }.setItems("2019", "2020", "2021")
+                    }
                 }
                 grid = grid {
-                    isHeightByRows = true
+                    isAllRowsVisible = true
                     setSelectionMode(Grid.SelectionMode.NONE)
                     addThemeVariants(
                         GridVariant.LUMO_NO_BORDER,
@@ -81,19 +82,18 @@ class DriverStandingsView : StandingView() {
         super.onAttach(attachEvent)
         grandPrixResultService.createViews()
         driverStandings = driverStandingsService.findAll(PageRequest.of(0, 25)).toMutableList()
-        grid.removeAllColumns()
-        grid.setItems(driverStandings)
-        grid.addColumns {
-            addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, driverStanding: DriverStanding ->
-                anchor.apply {
-                    text = driverStanding.name
-                    href = "/driver/${driverStanding.id}"
-                }
-            }).setHeader("Name")
-            addColumnFor(
-                DriverStanding::sum,
-                NumberRenderer(DriverStanding::sum, NumberFormat.getNumberInstance())
-            )
+        grid.apply {
+            removeAllColumns()
+            setItems(driverStandings)
+            addColumns {
+                addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, driverStanding: DriverStanding ->
+                    anchor.apply {
+                        text = driverStanding.name
+                        href = "/driver/${driverStanding.id}"
+                    }
+                }).setHeader("Name")
+                addColumnFor(DriverStanding::sum, renderer.invoke(DriverStanding::sum))
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
@@ -71,16 +71,7 @@ class NewsListView : KComposite() {
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.SINGLE)
-                    addSelectionListener {
-                        it.firstSelectedItem.ifPresentOrElse({
-                            editNewsButton.isEnabled = true
-                            deleteNewsButton.isEnabled = true
-                        }, {
-                            editNewsButton.isEnabled = false
-                            deleteNewsButton.isEnabled = false
-                        })
-                    }
-                    isHeightByRows = true
+                    isAllRowsVisible = true
                     addColumnFor(News::title) {
                         isSortable = false
                     }
@@ -91,42 +82,34 @@ class NewsListView : KComposite() {
                     addItemDoubleClickListener {
                         setLocation("/news/read/${it.item.id}")
                     }
-                    addThemeVariants(
-                        GridVariant.LUMO_NO_BORDER,
-                        GridVariant.LUMO_NO_ROW_BORDERS,
-                        GridVariant.LUMO_ROW_STRIPES
-                    )
+                    addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
                 }
                 if (isUserLoggedIn()) {
                     horizontalLayout {
                         setWidthFull()
-                        horizontalLayout {
-                            setWidthFull()
-                            button(if (getUser().role == Role.USER) "Suggest news" else "Add news").apply {
-                                setPrimary()
-                                onLeftClick {
-                                    setLocation(if (getUser().role == Role.USER) "/news/suggest/" else "/news/add/")
-                                }
+                        button("${if (getUser().role == Role.USER) "Suggest" else "Add"} news").apply {
+                            setPrimary()
+                            onLeftClick {
+                                setLocation("/news/${if (getUser().role == Role.USER) "suggest" else "add"}/")
                             }
-                            if (getUser().role in listOf(Role.ADMIN, Role.MODERATOR)) {
-                                editNewsButton = button("Edit news") {
-                                    isEnabled = false
-                                    onLeftClick {
-                                        val selectedNewsId = grid.selectedItems.toList()[0].id
-                                        setLocation("/news/edit/${selectedNewsId}")
-                                    }
+                        }
+                        if (getUser().role in listOf(Role.ADMIN, Role.MODERATOR)) {
+                            editNewsButton = button("Edit news") {
+                                isEnabled = false
+                                onLeftClick {
+                                    val selectedNewsId = grid.selectedItems.toList()[0].id
+                                    setLocation("/news/edit/${selectedNewsId}")
                                 }
                             }
                         }
                         if (getUser().role in listOf(Role.ADMIN, Role.MODERATOR)) {
-                            horizontalLayout {
-                                deleteNewsButton = button("Delete news") {
-                                    isEnabled = false
-                                    onLeftClick {
-                                        customDialog("Are you sure you want to delete the news?") {
-                                            deleteNews(grid.selectedItems.toList()[0])
-                                            grid.refresh()
-                                        }
+                            deleteNewsButton = button("Delete news") {
+                                style.set("margin-left", "auto")
+                                isEnabled = false
+                                onLeftClick {
+                                    customDialog("Are you sure you want to delete the news?") {
+                                        deleteNews(grid.selectedItems.toList()[0])
+                                        grid.refresh()
                                     }
                                 }
                             }
@@ -140,7 +123,15 @@ class NewsListView : KComposite() {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         news = newsService.findAllBySuggestedAndDeleted(false, false, PageRequest.of(0, 20)).toMutableList()
-        grid.setItems(news.sortedWith(comparatorForGrid))
+        grid.apply {
+            setItems(news.sortedWith(comparatorForGrid))
+            addSelectionListener {
+                if (isUserLoggedIn()) {
+                    editNewsButton.isEnabled = it.firstSelectedItem.isPresent
+                    deleteNewsButton.isEnabled = it.firstSelectedItem.isPresent
+                }
+            }
+        }
         suggestedCount = newsService.countAllBySuggested(true)
         suggestedNewsButton.apply {
             isVisible = suggestedCount > 0 && isUserLoggedIn() && getUser().role in listOf(Role.ADMIN, Role.MODERATOR)

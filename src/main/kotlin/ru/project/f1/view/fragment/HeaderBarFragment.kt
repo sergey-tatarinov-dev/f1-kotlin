@@ -37,13 +37,13 @@ class HeaderBarFragment {
                     Notification.show("News")
                     UiUtils.setLocation("/news")
                 }
-                addItem("Constructor Standings") {
-                    Notification.show("Constructor Standings")
-                    UiUtils.setLocation("/constructor-standings")
-                }
                 addItem("Driver Standings") {
                     Notification.show("Driver Standings")
                     UiUtils.setLocation("/driver-standings")
+                }
+                addItem("Constructor Standings") {
+                    Notification.show("Constructor Standings")
+                    UiUtils.setLocation("/constructor-standings")
                 }
             }
             return init(menuBar, block)

@@ -6,12 +6,12 @@ import java.util.function.Function
 
 class Utils {
     companion object {
-        fun format(localDateTime: LocalDateTime): String {
+        fun LocalDateTime.toFormatted(): String {
             val now = LocalDateTime.now()
-            var between = Duration.between(localDateTime, now)
-            if (localDateTime.plusHours(24) > now) {
-                if (localDateTime.plusMinutes(60) > now) {
-                    if (localDateTime.plusSeconds(60) > now) {
+            val between = Duration.between(this, now)
+            if (this.plusHours(24) > now) {
+                if (this.plusMinutes(60) > now) {
+                    if (this.plusSeconds(60) > now) {
                         return "${between.toSeconds()} seconds ago"
                     }
                     return "${between.toMinutes()} minutes ago"
