@@ -2,7 +2,6 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Anchor
@@ -14,8 +13,7 @@ import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.DriverStanding
-import ru.project.f1.entity.GrandPrixResultPerDriver
+import ru.project.f1.entity.GrandPrixResultPerGrandPrix
 import ru.project.f1.service.FileService
 import ru.project.f1.service.GrandPrixResultService
 import ru.project.f1.utils.UiUtils.Companion.imageFromPath
@@ -34,7 +32,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     private lateinit var fileService: FileService
     private lateinit var grandPrixId: String
     private lateinit var titleLayout: HorizontalLayout
-    private lateinit var grid: Grid<GrandPrixResultPerDriver>
+    private lateinit var grid: Grid<GrandPrixResultPerGrandPrix>
     private lateinit var pageTitle: String
 
     val root = ui {
@@ -58,16 +56,16 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         val grandPrixList = grandPrixResultService.findAllByGrandPrixId(grandPrixId.toInt())
         grid.apply {
             removeAllColumns()
-            addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, grandPrixResultPerDriver: GrandPrixResultPerDriver ->
+            addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, grandPrixResultPerGrandPrix: GrandPrixResultPerGrandPrix ->
                 anchor.apply {
-                    text = grandPrixResultPerDriver.driverName
-                    href = "/driver/${grandPrixResultPerDriver.driverId}"
+                    text = grandPrixResultPerGrandPrix.driverName
+                    href = "/driver/${grandPrixResultPerGrandPrix.driverId}"
                 }
             }).setHeader("Driver name")
-            addColumnFor(GrandPrixResultPerDriver::teamName) {
+            addColumnFor(GrandPrixResultPerGrandPrix::teamName) {
                 isSortable = false
             }
-            addColumnFor(GrandPrixResultPerDriver::position) {
+            addColumnFor(GrandPrixResultPerGrandPrix::position) {
                 isSortable = false
                 textAlign = ColumnTextAlign.END
             }
