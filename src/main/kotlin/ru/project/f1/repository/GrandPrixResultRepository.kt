@@ -14,10 +14,10 @@ interface GrandPrixResultRepository : JpaRepository<GrandPrixResult, BigInteger>
     fun findDistinctByGrandPrixId(): List<BigInteger>
 
     @Query("select NEW ru.project.f1.entity.GrandPrixResultPerDriver(" +
-            "concat(d.name, ' ', d.surname), t.name, gpr.position" +
+            "d.id, concat(d.name, ' ', d.surname), t.name, gpr.position" +
             ") " +
             "from GrandPrixResult gpr " +
-            "   inner join Driver d ON gpr.driver.id = d.id" +
+            "   inner join Driver d ON gpr.driver.id = d.id " +
             "   inner join GrandPrix gp on gpr.grandPrix.id = gp.id " +
             "   inner join LineUp lu on lu.lineUpId.driverId = d.id " +
             "   inner join Team t on t.id = lu.lineUpId.teamId " +

@@ -26,7 +26,7 @@ import kotlin.reflect.KProperty1
 
 @Route("driver-standings")
 @Component
-@PageTitle("F1 | Driver tandings")
+@PageTitle("F1 | Driver standings")
 @PreserveOnRefresh
 @UIScope
 class DriverStandingsView : StandingView() {

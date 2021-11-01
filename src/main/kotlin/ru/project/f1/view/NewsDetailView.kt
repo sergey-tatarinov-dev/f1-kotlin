@@ -10,10 +10,7 @@ import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.router.BeforeEnterEvent
-import com.vaadin.flow.router.BeforeEnterObserver
-import com.vaadin.flow.router.PreserveOnRefresh
-import com.vaadin.flow.router.Route
+import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -40,7 +37,7 @@ import java.time.format.FormatStyle
 @Component
 @PreserveOnRefresh
 @UIScope
-class NewsDetailView : KComposite(), BeforeEnterObserver {
+class NewsDetailView : KComposite(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var newsService: NewsService
@@ -50,6 +47,7 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
     @Autowired
     private lateinit var fileService: FileService
     private lateinit var newId: String
+    private lateinit var pageTitle: String
     private lateinit var title: H1
     private lateinit var timeSpan: Span
     private lateinit var newsBlock: Div
@@ -152,7 +150,7 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
                 newsBlock.add(Html("<div><p>${it.text.replace("\n", "</p><p>")}</p></div>"))
                 timeSpan.text = it.createdDate.format(formatter)
                 news = it
-                UI.getCurrent().page.setTitle(news.title)
+                pageTitle = news.title
                 listOf(commentsTitle, commentsBlock, commentsField, publishCommentButton)
                     .forEach { component -> component.apply { isVisible = !news.suggested } }
                 listOf(refuseButton, publishNewsButton)
@@ -261,5 +259,7 @@ class NewsDetailView : KComposite(), BeforeEnterObserver {
             }
         }
     }
+
+    override fun getPageTitle(): String = pageTitle
 
 }
