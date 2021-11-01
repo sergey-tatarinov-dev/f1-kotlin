@@ -3,9 +3,10 @@ package ru.project.f1.view
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.orderedlayout.FlexComponent
+import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.renderer.NumberRenderer
 import com.vaadin.flow.router.PageTitle
@@ -38,6 +39,8 @@ class DriverStandingsView : StandingView() {
 
     private lateinit var driverStandings: List<DriverStanding>
     private lateinit var grid: Grid<DriverStanding>
+    private lateinit var select: Select<String>
+
     private var renderer = { valueProvider: KProperty1<DriverStanding, Double> ->
         NumberRenderer(
             valueProvider,
@@ -59,20 +62,14 @@ class DriverStandingsView : StandingView() {
                     h1("Drivers standings") {
                         style.set("flex-grow", "1")
                     }
-                    select<String> {
+                    select = select {
                         label = "Year"
-                        setItems("2019", "2020", "2021")
-                        value = "2021"
                     }
                 }
                 grid = grid {
                     isAllRowsVisible = true
                     setSelectionMode(Grid.SelectionMode.NONE)
-                    addThemeVariants(
-                        GridVariant.LUMO_NO_BORDER,
-                        GridVariant.LUMO_NO_ROW_BORDERS,
-                        GridVariant.LUMO_ROW_STRIPES
-                    )
+                    addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
                 }
             }
         }
@@ -94,6 +91,11 @@ class DriverStandingsView : StandingView() {
                 }).setHeader("Name")
                 addColumnFor(DriverStanding::sum, renderer.invoke(DriverStanding::sum))
             }
+        }
+        select.apply {
+            val years = grandPrixResultService.findAllYears().map { it.toString() }
+            setItems(years)
+            value = years.last()
         }
     }
 }

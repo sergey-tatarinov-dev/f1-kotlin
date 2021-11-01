@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import ru.project.f1.entity.GrandPrix
 import ru.project.f1.entity.GrandPrixResult
+import ru.project.f1.entity.GrandPrixResultPerDriver
 import ru.project.f1.repository.GrandPrixRepository
 import ru.project.f1.repository.GrandPrixResultRepository
 import ru.project.f1.service.GrandPrixResultService
@@ -91,4 +93,11 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
 
         em.createNativeQuery(sql).executeUpdate()
     }
+
+    override fun findAllYears(): List<Int> = grandPrixRepository.findAllYears()
+
+    override fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerDriver> =
+        grandPrixResultRepository.findAllByGrandPrixId(id)
+
+    override fun findGrandPrixById(id: BigInteger): Optional<GrandPrix> = grandPrixRepository.findById(id)
 }

@@ -3,9 +3,10 @@ package ru.project.f1.view
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.orderedlayout.FlexComponent
+import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.renderer.NumberRenderer
 import com.vaadin.flow.router.PageTitle
@@ -36,6 +37,7 @@ class ConstructorStandingsView : StandingView() {
 
     private lateinit var teamStandings: List<TeamStanding>
     private lateinit var grid: Grid<TeamStanding>
+    private lateinit var select: Select<String>
 
     val root = ui {
         verticalLayout {
@@ -51,20 +53,14 @@ class ConstructorStandingsView : StandingView() {
                     h1("Constructors standings") {
                         style.set("flex-grow", "1")
                     }
-                    select<String> {
+                    select = select {
                         label = "Year"
-                        setItems("2019", "2020", "2021")
-                        value = "2021"
                     }
                 }
                 grid = grid {
                     isAllRowsVisible = true
                     setSelectionMode(Grid.SelectionMode.NONE)
-                    addThemeVariants(
-                        GridVariant.LUMO_NO_BORDER,
-                        GridVariant.LUMO_NO_ROW_BORDERS,
-                        GridVariant.LUMO_ROW_STRIPES
-                    )
+                    addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
                 }
             }
         }
@@ -89,6 +85,11 @@ class ConstructorStandingsView : StandingView() {
                     NumberRenderer(TeamStanding::sum, NumberFormat.getNumberInstance())
                 )
             }
+        }
+        select.apply {
+            val years = grandPrixResultService.findAllYears().map { it.toString() }
+            setItems(years)
+            value = years.last()
         }
     }
 }

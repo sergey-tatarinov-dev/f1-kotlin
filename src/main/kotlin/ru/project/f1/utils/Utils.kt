@@ -6,6 +6,7 @@ import java.util.function.Function
 
 class Utils {
     companion object {
+
         fun LocalDateTime.toFormatted(): String {
             val now = LocalDateTime.now()
             val between = Duration.between(this, now)

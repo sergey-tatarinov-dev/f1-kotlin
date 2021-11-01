@@ -5,7 +5,7 @@ import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
 import com.vaadin.flow.router.PageTitle
@@ -70,11 +70,7 @@ class SuggestedNewsListView : KComposite() {
                     addItemDoubleClickListener {
                         UiUtils.setLocation("/news/read/${it.item.id}")
                     }
-                    addThemeVariants(
-                        GridVariant.LUMO_NO_BORDER,
-                        GridVariant.LUMO_NO_ROW_BORDERS,
-                        GridVariant.LUMO_ROW_STRIPES
-                    )
+                    addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
                 }
             }
         }
