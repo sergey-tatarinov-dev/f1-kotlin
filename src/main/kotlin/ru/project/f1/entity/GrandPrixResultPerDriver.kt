@@ -1,3 +1,10 @@
 package ru.project.f1.entity
 
-data class GrandPrixResultPerDriver(val driverName: String, val teamName: String, val position: Int)
+import java.math.BigInteger
+
+data class GrandPrixResultPerDriver(
+    val driverId: BigInteger,
+    val driverName: String,
+    val teamName: String,
+    val position: Int,
+)
