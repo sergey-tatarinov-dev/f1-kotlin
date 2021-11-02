@@ -99,7 +99,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             }.apply {
                 setHeader("Grand Prix")
             }
-            addColumnFor(GrandPrixResultPerDriver::points, renderer.invoke(GrandPrixResultPerDriver::points)) {
+            columnFor(GrandPrixResultPerDriver::points, renderer.invoke(GrandPrixResultPerDriver::points)) {
                 isSortable = false
                 textAlign = ColumnTextAlign.END
             }

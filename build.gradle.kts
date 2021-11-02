@@ -32,7 +32,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-web")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.security:spring-security-config")
-    implementation("com.github.mvysny.karibudsl:karibu-dsl:1.0.7")
+    implementation("com.github.mvysny.karibudsl:karibu-dsl:1.1.1")
     implementation("org.postgresql:postgresql:42.2.20")
     implementation("org.liquibase:liquibase-core:4.0.0")
     implementation("com.vladmihalcea:hibernate-types-52:2.12.0")

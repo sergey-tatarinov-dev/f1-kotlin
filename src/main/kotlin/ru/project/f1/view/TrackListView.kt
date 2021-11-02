@@ -41,14 +41,14 @@ class TrackListView : KComposite() {
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
                     isAllRowsVisible = true
-                    addColumnFor(Track::circuitName) {
+                    columnFor(Track::circuitName) {
                         isSortable = false
                     }
-                    addColumnFor(Track::length) {
+                    columnFor(Track::length) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }
-                    addColumnFor(Track::lapCount) {
+                    columnFor(Track::lapCount) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }

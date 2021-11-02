@@ -89,7 +89,7 @@ class DriverStandingsView : StandingView() {
                         href = "/driver/${driverStanding.id}"
                     }
                 }).setHeader("Name")
-                addColumnFor(DriverStanding::sum, renderer.invoke(DriverStanding::sum))
+                columnFor(DriverStanding::sum, renderer.invoke(DriverStanding::sum))
             }
         }
         select.apply {

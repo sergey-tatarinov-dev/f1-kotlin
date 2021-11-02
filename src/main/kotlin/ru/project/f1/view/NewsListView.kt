@@ -1,6 +1,8 @@
 package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.kaributools.refresh
+import com.github.mvysny.kaributools.setPrimary
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
@@ -72,10 +74,10 @@ class NewsListView : KComposite() {
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.SINGLE)
                     isAllRowsVisible = true
-                    addColumnFor(News::title) {
+                    columnFor(News::title) {
                         isSortable = false
                     }
-                    addColumnFor(createdDateRef, renderer) {
+                    columnFor(createdDateRef, renderer) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }

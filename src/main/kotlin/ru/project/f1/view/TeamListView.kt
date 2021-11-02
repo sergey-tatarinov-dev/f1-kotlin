@@ -41,10 +41,10 @@ class TeamListView : KComposite() {
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
                     isAllRowsVisible = true
-                    addColumnFor(Team::fullName) {
+                    columnFor(Team::fullName) {
                         isSortable = false
                     }
-                    addColumnFor(Team::name) {
+                    columnFor(Team::name) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }

@@ -77,7 +77,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     override fun getPageTitle(): String = pageTitle
 
     fun Grid<GrandPrixResultPerGrandPrix>.addMyColumns() {
-        addColumnFor(GrandPrixResultPerGrandPrix::position) {
+        columnFor(GrandPrixResultPerGrandPrix::position) {
             isSortable = false
             isExpand = false
         }
@@ -99,7 +99,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             isExpand = false
         }
 
-        addColumnFor(GrandPrixResultPerGrandPrix::teamName) {
+        columnFor(GrandPrixResultPerGrandPrix::teamName) {
             isSortable = false
             setHeader("Team")
         }

@@ -42,10 +42,10 @@ class DriverListView : KComposite() {
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
                     isAllRowsVisible = true
-                    addColumnFor(Driver::name, TextRenderer { "${it.name} ${it.surname}" }) {
+                    columnFor(Driver::name, TextRenderer { "${it.name} ${it.surname}" }) {
                         isSortable = false
                     }
-                    addColumnFor(Driver::raceNumber) {
+                    columnFor(Driver::raceNumber) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }

@@ -80,7 +80,7 @@ class ConstructorStandingsView : StandingView() {
                         href = "/team/${teamStanding.id}"
                     }
                 }).setHeader("Name")
-                addColumnFor(
+                columnFor(
                     TeamStanding::sum,
                     NumberRenderer(TeamStanding::sum, NumberFormat.getNumberInstance())
                 )

@@ -1,6 +1,7 @@
 package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.kaributools.setPrimary
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Html
 import com.vaadin.flow.component.button.Button

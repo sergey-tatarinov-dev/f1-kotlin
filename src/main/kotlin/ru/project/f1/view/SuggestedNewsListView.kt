@@ -60,10 +60,10 @@ class SuggestedNewsListView : KComposite() {
                         })
                     }
                     flexGrow = 1.0
-                    addColumnFor(News::title) {
+                    columnFor(News::title) {
                         isSortable = false
                     }
-                    addColumnFor(createdDateRef, renderer) {
+                    columnFor(createdDateRef, renderer) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
                     }
