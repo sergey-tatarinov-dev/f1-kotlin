@@ -78,22 +78,22 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         val grandPrixList = grandPrixResultService.findAllByDriverId(driverId.toInt())
         grid.apply {
             removeAllColumns()
-            addComponentColumn { grandPrixResultPerDriver ->
+            addComponentColumn {
                 val grandPrix =
-                    grandPrixResultService.findGrandPrixById(grandPrixResultPerDriver.grandPrixId).orElseThrow()
+                    grandPrixResultService.findGrandPrixById(it.grandPrixId).orElseThrow()
                 pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
                 val country = grandPrix.track.country
-                val image = imageById(country.f1File.id, grandPrixResultPerDriver.grandPrixName) {
+                val image = imageById(country.f1File.id, it.grandPrixName) {
                     height = "20px"
                     width = "30px"
                 }
-                val text = Span(grandPrixResultPerDriver.grandPrixName).apply {
+                val text = Span(it.grandPrixName).apply {
                     style.apply {
                         set("margin-left", "10px")
                         set("align-self", "center")
                     }
                 }
-                Anchor("/grand-prix/${grandPrixResultPerDriver.grandPrixId}", image, text).apply {
+                Anchor("/grand-prix/${it.grandPrixId}", image, text).apply {
                     style.set("display", "inline-flex")
                 }
             }.apply {
