@@ -3,7 +3,6 @@ package ru.project.f1.view
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Html
-import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.html.*
 import com.vaadin.flow.component.icon.Icon
@@ -18,11 +17,9 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.Comment
 import ru.project.f1.entity.News
 import ru.project.f1.service.CommentService
-import ru.project.f1.service.FileService
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
-import ru.project.f1.utils.UiUtils.Companion.avatarFromPath
 import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.reload
 import ru.project.f1.utils.UiUtils.Companion.setLocation
@@ -37,15 +34,13 @@ import java.time.format.FormatStyle
 @Component
 @PreserveOnRefresh
 @UIScope
-class NewsDetailView : KComposite(), BeforeEnterObserver, HasDynamicTitle {
+class NewsDetailView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var newsService: NewsService
 
     @Autowired
     private lateinit var commentService: CommentService
-    @Autowired
-    private lateinit var fileService: FileService
     private lateinit var newId: String
     private lateinit var pageTitle: String
     private lateinit var title: H1
@@ -176,13 +171,11 @@ class NewsDetailView : KComposite(), BeforeEnterObserver, HasDynamicTitle {
     private fun addComment(comment: Comment) {
         commentsBlock.apply {
             val user = comment.author
-            val fileId = user.userPic?.id!!
-            val file = fileService.findById(fileId).orElseThrow().absolutePath
             add(
                 horizontalLayout {
                     alignItems = FlexComponent.Alignment.START
                     add(
-                        avatarFromPath(file, user.login).apply {
+                        avatarById(user.userPic?.id!!, user.login) {
                             height = "30px"
                             width = "30px"
                             style.set("padding-top", "10px")

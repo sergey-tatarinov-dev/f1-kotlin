@@ -18,22 +18,6 @@ class UiUtils {
 
     companion object {
 
-        fun imageFromPath(src: String, alt: String): Image =
-            Image(
-                StreamResource(alt,
-                    InputStreamFactory {
-                        FileInputStream(src)
-                    }), alt
-            ).apply {
-                setWidthFull()
-            }
-
-        fun avatarFromPath(src: String, name: String): Avatar =
-            Avatar(name).apply {
-                imageResource = StreamResource(name, InputStreamFactory { FileInputStream(src) })
-                setWidthFull()
-            }
-
         fun customDialog(dialogMessage: String, action: Button.() -> Unit) {
             val dialog = Dialog().apply {
                 height = "20%"

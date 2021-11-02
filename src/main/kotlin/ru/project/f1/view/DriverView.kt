@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.GrandPrixResultPerDriver
 import ru.project.f1.service.DriverService
-import ru.project.f1.service.FileService
 import ru.project.f1.service.GrandPrixResultService
-import ru.project.f1.utils.UiUtils.Companion.imageFromPath
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.text.NumberFormat
 import kotlin.reflect.KProperty1
@@ -34,9 +32,6 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
-
-    @Autowired
-    private lateinit var fileService: FileService
     private lateinit var driverId: String
     private lateinit var titleLayout: HorizontalLayout
     private lateinit var grid: Grid<GrandPrixResultPerDriver>
@@ -69,11 +64,10 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         super.onAttach(attachEvent)
         val driver = driverService.findById(driverId.toBigInteger()).orElseThrow()
         pageTitle = "${driver.name} ${driver.surname}"
-        val driverFlag = fileService.findById(driver.country.f1File.id).orElseThrow()
         titleLayout.apply {
             removeAll()
             add(
-                imageFromPath(driverFlag.absolutePath, "${driver.name} ${driver.surname}").apply {
+                imageById(driver.country.f1File.id, "${driver.name} ${driver.surname}") {
                     height = "30px"
                     width = "45px"
                 },
@@ -85,11 +79,11 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         grid.apply {
             removeAllColumns()
             addComponentColumn { grandPrixResultPerDriver ->
-                val grandPrix = grandPrixResultService.findGrandPrixById(grandPrixResultPerDriver.grandPrixId).orElseThrow()
+                val grandPrix =
+                    grandPrixResultService.findGrandPrixById(grandPrixResultPerDriver.grandPrixId).orElseThrow()
                 pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
                 val country = grandPrix.track.country
-                val file = fileService.findById(country.f1File.id).orElseThrow()
-                val image = imageFromPath(file.absolutePath, grandPrixResultPerDriver.grandPrixName).apply {
+                val image = imageById(country.f1File.id, grandPrixResultPerDriver.grandPrixName) {
                     height = "20px"
                     width = "30px"
                 }
@@ -105,8 +99,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             }.apply {
                 setHeader("Grand Prix")
             }
-            addColumnFor(GrandPrixResultPerDriver::
-            points, renderer.invoke(GrandPrixResultPerDriver::points)) {
+            addColumnFor(GrandPrixResultPerDriver::points, renderer.invoke(GrandPrixResultPerDriver::points)) {
                 isSortable = false
                 textAlign = ColumnTextAlign.END
             }

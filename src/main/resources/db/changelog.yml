@@ -84,3 +84,7 @@ databaseChangeLog:
   - include:
       file: changelog/20211029_add_default_profile_picture.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211101_insert_teams.sql
+      relativeToChangelogFile: true

@@ -6,11 +6,8 @@ import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.project.f1.service.FileService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
-import ru.project.f1.utils.UiUtils.Companion.avatarFromPath
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
@@ -19,10 +16,7 @@ import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 @PageTitle("F1 | Profile")
 @PreserveOnRefresh
 @UIScope
-class ProfileView : KComposite(), BeforeEnterObserver {
-
-    @Autowired
-    private lateinit var fileService: FileService
+class ProfileView : HasImage(), BeforeEnterObserver {
 
     private lateinit var div: Div
     private lateinit var login: String
@@ -55,15 +49,14 @@ class ProfileView : KComposite(), BeforeEnterObserver {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         val user = getUser()
-        val fileId = user.userPic?.id
-        val file = fileService.findById(fileId!!)
-        val avatarFromPath = avatarFromPath(file.orElseThrow().absolutePath, user.login).apply {
-            setHeightFull()
-        }
         div.apply {
             horizontalAlignSelf = FlexComponent.Alignment.CENTER
             removeAll()
-            add(avatarFromPath)
+            add(
+                avatarById(user.userPic?.id!!, user.login) {
+                    setHeightFull()
+                }
+            )
         }
     }
 }

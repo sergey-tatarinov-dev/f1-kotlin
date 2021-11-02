@@ -4,7 +4,9 @@ import java.math.BigInteger
 
 data class GrandPrixResultPerGrandPrix(
     val driverId: BigInteger,
+    val position: Int,
     val driverName: String,
+    val countryId: BigInteger,
     val teamName: String,
-    val position: Int
+    val logoId: BigInteger
 )
