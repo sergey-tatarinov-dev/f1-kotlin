@@ -2,9 +2,8 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -14,11 +13,8 @@ import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.DriverStanding
-import ru.project.f1.entity.GrandPrixResultPerDriver
-import ru.project.f1.service.FileService
+import ru.project.f1.entity.GrandPrixResultPerGrandPrix
 import ru.project.f1.service.GrandPrixResultService
-import ru.project.f1.utils.UiUtils.Companion.imageFromPath
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 @Route("grand-prix/:id")
@@ -29,12 +25,9 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
-
-    @Autowired
-    private lateinit var fileService: FileService
     private lateinit var grandPrixId: String
     private lateinit var titleLayout: HorizontalLayout
-    private lateinit var grid: Grid<GrandPrixResultPerDriver>
+    private lateinit var grid: Grid<GrandPrixResultPerGrandPrix>
     private lateinit var pageTitle: String
 
     val root = ui {
@@ -58,29 +51,17 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         val grandPrixList = grandPrixResultService.findAllByGrandPrixId(grandPrixId.toInt())
         grid.apply {
             removeAllColumns()
-            addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, grandPrixResultPerDriver: GrandPrixResultPerDriver ->
-                anchor.apply {
-                    text = grandPrixResultPerDriver.driverName
-                    href = "/driver/${grandPrixResultPerDriver.driverId}"
-                }
-            }).setHeader("Driver name")
-            addColumnFor(GrandPrixResultPerDriver::teamName) {
-                isSortable = false
-            }
-            addColumnFor(GrandPrixResultPerDriver::position) {
-                isSortable = false
-                textAlign = ColumnTextAlign.END
-            }
+            addMyColumns()
+            addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)
             setItems(grandPrixList)
         }
         val grandPrix = grandPrixResultService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
         pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
         val country = grandPrix.track.country
-        val file = fileService.findById(country.f1File.id).orElseThrow()
         titleLayout.apply {
             removeAll()
             add(
-                imageFromPath(file.absolutePath, country.name).apply {
+                imageById(country.f1File.id, country.name) {
                     height = "30px"
                     width = "45px"
                 },
@@ -94,4 +75,42 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     }
 
     override fun getPageTitle(): String = pageTitle
+
+    fun Grid<GrandPrixResultPerGrandPrix>.addMyColumns() {
+        addColumnFor(GrandPrixResultPerGrandPrix::position) {
+            isSortable = false
+            isExpand = false
+        }
+
+        addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, it: GrandPrixResultPerGrandPrix ->
+            val split = it.driverName.split(" ")
+            anchor.apply {
+                text = "${split[0]} ${split[1].toUpperCase()}"
+                href = "/driver/${it.driverId}"
+            }
+        }).setHeader("Driver")
+
+        addComponentColumn {
+            imageById(it.countryId, it.driverName) {
+                height = "20px"
+                width = "30px"
+            }
+        }.apply {
+            isExpand = false
+        }
+
+        addColumnFor(GrandPrixResultPerGrandPrix::teamName) {
+            isSortable = false
+            setHeader("Team")
+        }
+
+        addComponentColumn {
+            imageById(it.logoId, it.teamName) {
+                height = "25px"
+                width = "25px"
+            }
+        }.apply {
+            isExpand = false
+        }
+    }
 }

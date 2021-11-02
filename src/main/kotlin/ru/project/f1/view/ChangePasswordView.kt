@@ -13,7 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 import ru.project.f1.service.UserService
-import ru.project.f1.utils.SecurityUtils.Companion.encode
+import ru.project.f1.utils.SecurityUtils.Companion.encoded
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
@@ -76,7 +76,7 @@ class ChangePasswordView : KComposite() {
             val newPassword = newPasswordField.value
             val repeatPassword = repeatPasswordField.value
             if (newPassword == repeatPassword) {
-                user.password = encode(newPassword)
+                user.password = newPassword.encoded()
                 userService.save(user)
                 setLocation("/profile/${user.login}")
             } else {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 import ru.project.f1.entity.GrandPrix
 import ru.project.f1.entity.GrandPrixResult
 import ru.project.f1.entity.GrandPrixResultPerDriver
+import ru.project.f1.entity.GrandPrixResultPerGrandPrix
 import ru.project.f1.repository.GrandPrixRepository
 import ru.project.f1.repository.GrandPrixResultRepository
 import ru.project.f1.service.GrandPrixResultService
@@ -27,7 +28,8 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
     @Autowired
     private lateinit var grandPrixResultRepository: GrandPrixResultRepository
 
-    override fun save(grandPrixResult: GrandPrixResult): GrandPrixResult = grandPrixResultRepository.save(grandPrixResult)
+    override fun save(grandPrixResult: GrandPrixResult): GrandPrixResult =
+        grandPrixResultRepository.save(grandPrixResult)
 
     override fun findById(id: BigInteger): Optional<GrandPrixResult> = grandPrixResultRepository.findById(id)
 
@@ -96,8 +98,12 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
 
     override fun findAllYears(): List<Int> = grandPrixRepository.findAllYears()
 
-    override fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerDriver> =
+    override fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerGrandPrix> =
         grandPrixResultRepository.findAllByGrandPrixId(id)
 
     override fun findGrandPrixById(id: BigInteger): Optional<GrandPrix> = grandPrixRepository.findById(id)
+
+    override fun findAllByDriverId(id: Int): List<GrandPrixResultPerDriver> =
+        grandPrixResultRepository.findAllByDriverId(id)
+
 }

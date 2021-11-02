@@ -12,5 +12,6 @@ data class Team(
     @GeneratedValue(strategy = GenerationType.IDENTITY) var id: BigInteger = BigInteger.ZERO,
     @field:NotBlank var fullName: String = "",
     @field:NotBlank var name: String = "",
-    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "country_id") var country: Country
+    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "country_id") var country: Country,
+    @field:NotNull @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "logo_id") var file: F1File
 )

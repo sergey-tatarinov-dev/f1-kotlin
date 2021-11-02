@@ -1,6 +1,5 @@
 package ru.project.f1.view
 
-import com.github.mvysny.karibudsl.v10.KComposite
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Anchor
@@ -8,15 +7,10 @@ import com.vaadin.flow.data.renderer.NumberRenderer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import ru.project.f1.entity.Standing
-import ru.project.f1.service.FileService
 import ru.project.f1.service.GrandPrixResultService
-import ru.project.f1.utils.UiUtils.Companion.imageFromPath
 import java.text.NumberFormat
 
-open class StandingView : KComposite() {
-
-    @Autowired
-    private lateinit var fileService: FileService
+class StandingView : HasImage() {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
@@ -40,10 +34,7 @@ open class StandingView : KComposite() {
                         width = "1%"
                         textAlign = ColumnTextAlign.CENTER
 
-                        val findById = fileService.findById(standing.first.track.country.id)
-                        val src = findById.orElseThrow().absolutePath
-                        val alt = standing.first.fullName
-                        val image = imageFromPath(src, alt).apply {
+                        val image = imageById(standing.first.track.country.id, standing.first.fullName) {
                             height = "20px"
                         }
                         setHeader(
