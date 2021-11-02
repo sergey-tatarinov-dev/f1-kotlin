@@ -48,7 +48,7 @@ class SecurityUtils {
                 .anyMatch(allowedRoles::contains)
         }
 
-        fun encode(password: String): String = BCryptPasswordEncoder(12).encode(password)
+        fun String.encoded(): String = BCryptPasswordEncoder(12).encode(this)
 
     }
 
