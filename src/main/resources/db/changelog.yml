@@ -88,3 +88,15 @@ databaseChangeLog:
   - include:
       file: changelog/20211101_insert_teams.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211102_create_function_get_year_by_grand_prix_id.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211125_insert_brazil_spring_qualifying.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211125_insert_mexico_brazil_and_qatar_grand_prix_result.sql
+      relativeToChangelogFile: true

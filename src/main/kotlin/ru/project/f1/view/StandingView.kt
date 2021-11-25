@@ -1,5 +1,6 @@
 package ru.project.f1.view
 
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Anchor
@@ -10,6 +11,7 @@ import ru.project.f1.entity.Standing
 import ru.project.f1.service.GrandPrixResultService
 import java.text.NumberFormat
 
+@CssImport(themeFor = "vaadin-grid", value = "./styles/style.css")
 class StandingView : HasImage() {
 
     @Autowired
@@ -17,7 +19,7 @@ class StandingView : HasImage() {
 
     fun <T : Standing> Grid<T>.addColumns(block: Grid<T>.() -> Unit = {}) {
         apply(block)
-        val grandPrixResults = grandPrixResultService.findAll(PageRequest.of(0, 400)).toMutableList()
+        val grandPrixResults = grandPrixResultService.findAll(PageRequest.of(0, 600)).toMutableList()
         grandPrixResults
             .sortedBy { it.grandPrix.date }
             .groupBy { it.grandPrix }
@@ -31,6 +33,7 @@ class StandingView : HasImage() {
                             }, NumberFormat.getNumberInstance()
                         )
                     ).apply {
+                        setClassNameGenerator { "min-padding" }
                         width = "1%"
                         textAlign = ColumnTextAlign.CENTER
 
@@ -38,17 +41,20 @@ class StandingView : HasImage() {
                             height = "20px"
                         }
                         setHeader(
-                            Anchor("/grand-prix/${standing.first.id}", image)
-                                .apply { setTitle(standing.first.fullName) }
+                            Anchor("/grand-prix/${standing.first.id}", image).apply {
+                                setTitle(standing.first.fullName)
+                                setClassNameGenerator { "min-padding" }
+                            }
                         )
                     }
                 }
             }
         getColumnByKey("sum").apply {
+            setClassNameGenerator { "min-padding" }
             isSortable = false
             width = "2%"
             textAlign = ColumnTextAlign.CENTER
-            grid.style.set("font-size", "13px")
+            style.set("font-size", "13px")
         }
     }
 }

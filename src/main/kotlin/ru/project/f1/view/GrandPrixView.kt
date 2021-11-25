@@ -3,7 +3,7 @@ package ru.project.f1.view
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -52,7 +52,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         grid.apply {
             removeAllColumns()
             addMyColumns()
-            addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)
+            addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
             setItems(grandPrixList)
         }
         val grandPrix = grandPrixResultService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
