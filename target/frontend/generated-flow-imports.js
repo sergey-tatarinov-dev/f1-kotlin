@@ -2,6 +2,14 @@ const div = document.createElement('div');
 div.innerHTML = '<custom-style><style include="lumo-color lumo-typography"></style></custom-style>';
 document.head.insertBefore(div.firstElementChild, document.head.firstChild);
 
+function addCssBlock(block) {
+ const tpl = document.createElement('template');
+ tpl.innerHTML = block;
+ document.head.appendChild(tpl.content);
+}
+import $css_0 from 'Frontend/styles/style.css';
+addCssBlock(`<dom-module id="flow_css_mod_0" theme-for="vaadin-grid"><template><style>${$css_0}</style></template></dom-module>`);
+
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-list/iron-list.js';
 import '@vaadin/flow-frontend/comboBoxConnector-es6.js';
@@ -13,6 +21,7 @@ import '@vaadin/flow-frontend/gridConnector-es6.js';
 import '@vaadin/flow-frontend/ironListConnector-es6.js';
 import '@vaadin/flow-frontend/ironListStyles.js';
 import '@vaadin/flow-frontend/menubarConnector.js';
+import '@vaadin/flow-frontend/messageListConnector.js';
 import '@vaadin/flow-frontend/timepickerConnector.js';
 import '@vaadin/flow-frontend/vaadin-big-decimal-field.js';
 import '@vaadin/flow-frontend/vaadin-grid-flow-selection-column.js';
@@ -50,6 +59,8 @@ import '@vaadin/vaadin-lumo-styles/spacing.js';
 import '@vaadin/vaadin-lumo-styles/style.js';
 import '@vaadin/vaadin-lumo-styles/typography.js';
 import '@vaadin/vaadin-menu-bar/theme/lumo/vaadin-menu-bar.js';
+import '@vaadin/vaadin-messages/theme/lumo/vaadin-message-input.js';
+import '@vaadin/vaadin-messages/theme/lumo/vaadin-message-list.js';
 import '@vaadin/vaadin-notification/theme/lumo/vaadin-notification.js';
 import '@vaadin/vaadin-ordered-layout/theme/lumo/vaadin-horizontal-layout.js';
 import '@vaadin/vaadin-ordered-layout/theme/lumo/vaadin-vertical-layout.js';

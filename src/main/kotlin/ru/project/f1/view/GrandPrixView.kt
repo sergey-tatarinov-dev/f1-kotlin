@@ -85,7 +85,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
         addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, it: GrandPrixResultPerGrandPrix ->
             val split = it.driverName.split(" ")
             anchor.apply {
-                text = "${split[0]} ${split[1].toUpperCase()}"
+                text = "${split[0]} ${split[1].uppercase()}"
                 href = "/driver/${it.driverId}"
             }
         }).setHeader("Driver")
