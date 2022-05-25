@@ -1,0 +1,7 @@
+[part~="cell"].min-padding ::slotted(vaadin-grid-cell-content) {
+    padding: 2px;
+}
+
+[part~="header-cell"] ::slotted(vaadin-grid-cell-content) {
+    padding: 4px;
+}

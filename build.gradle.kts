@@ -4,9 +4,9 @@ plugins {
     id("org.springframework.boot") version "2.4.6"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("com.vaadin") version "0.14.3.7"
-    kotlin("jvm") version "1.4.32"
-    kotlin("plugin.spring") version "1.4.32"
-    kotlin("plugin.jpa") version "1.4.32"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
+    kotlin("plugin.jpa") version "1.6.21"
 }
 
 group = "ru.project"
@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 
-extra["vaadinVersion"] = "14.6.1"
+extra["vaadinVersion"] = "14.7.3"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -32,9 +32,10 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-web")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.security:spring-security-config")
-    implementation("com.github.mvysny.karibudsl:karibu-dsl:1.0.7")
-    implementation("org.postgresql:postgresql:42.2.20")
-    implementation("org.liquibase:liquibase-core:4.0.0")
+    implementation("com.github.mvysny.karibudsl:karibu-dsl:1.1.2")
+    implementation("org.postgresql:postgresql:42.3.4")
+    implementation("org.liquibase:liquibase-core:4.10.0")
+    implementation("com.vladmihalcea:hibernate-types-52:2.16.2")
 }
 
 dependencyManagement {

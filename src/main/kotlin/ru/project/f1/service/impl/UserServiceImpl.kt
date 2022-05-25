@@ -24,11 +24,13 @@ class UserServiceImpl : UserService {
 
     override fun findAll(pageable: Pageable) = userRepository.findAll(pageable)
 
-    override fun findByLoginAndPassword(login: String, password: String) = userRepository.findByLoginAndPassword(login, password)
+    override fun findByLoginAndPassword(login: String, password: String) =
+        userRepository.findByLoginAndPassword(login, password)
 
     override fun findByLogin(login: String): Optional<User> = userRepository.findByLogin(login)
 
-    override fun loadUserByUsername(username: String?): UserDetails = userRepository.findByLogin(username!!).orElseThrow {
-        RuntimeException("Cannot find user with this username")
-    }
+    override fun loadUserByUsername(username: String?): UserDetails =
+        userRepository.findByLogin(username!!).orElseThrow {
+            RuntimeException("Cannot find user with this username")
+        }
 }

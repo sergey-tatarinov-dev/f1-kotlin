@@ -2,12 +2,12 @@ package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.data.binder.Setter
 import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,16 +18,16 @@ import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.time.LocalDateTime
 
 @Route("news/edit/:id?")
-@RouteAlias(value = "news/add/")
+@RouteAlias.Container(RouteAlias(value = "news/suggest/"), RouteAlias(value = "news/add/"))
 @Component
 @PageTitle("F1 | Edit news")
 @PreserveOnRefresh
 @UIScope
-@Secured("MODERATOR", "ADMIN")
+@Secured("USER", "MODERATOR", "ADMIN")
 class NewsEditView : KComposite(), BeforeEnterObserver {
 
     @Autowired
@@ -37,6 +37,8 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
     private lateinit var newsText: TextArea
     private lateinit var newId: String
     private lateinit var newsForEdit: News
+    private lateinit var title: H1
+    private var action: String = ""
 
     val root = ui {
         verticalLayout {
@@ -45,10 +47,10 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                height = "100%"
-                h1("Add news")
+                setWidthFull()
+                title = h1("")
                 newsTitle = textField {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "News title"
                 }
                 newsText = textArea {
@@ -56,19 +58,22 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                     placeholder = "News text"
                 }
                 horizontalLayout {
-                    width = "100%"
-                    horizontalLayout { width = "100%" }
+                    setWidthFull()
+                    horizontalLayout { setWidthFull() }
                     horizontalLayout {
                         saveNewsButton = button("Save news") {
                             onLeftClick {
-                                if (newsText.isEmpty || newsTitle.isEmpty){
+                                if (newsText.isEmpty || newsTitle.isEmpty) {
                                     show("Title or text isn't filled")
                                 } else {
                                     val news = if (newId.isEmpty()) {
                                         News(getUser(), LocalDateTime.now())
                                     } else newsForEdit
-                                    news.title = newsTitle.value
-                                    news.text = newsText.value
+                                    news.apply {
+                                        title = newsTitle.value
+                                        text = newsText.value
+                                        suggested = action == "suggest"
+                                    }
                                     newsService.save(news)
                                     setLocation("/news")
                                 }
@@ -82,7 +87,15 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
 
     override fun beforeEnter(event: BeforeEnterEvent?) {
         newId = event!!.routeParameters["id"].orElse("")
+        action = event.location.segments[1]
+        UI.getCurrent().page.setTitle("F1 | ${getTitle(action)} news")
+        title.text = "${getTitle(action)} news"
+        if (action == "suggest") {
+            saveNewsButton.text = "Suggest news"
+        }
     }
+
+    private fun getTitle(title: String) = if (title == "add") "Add" else if (title == "edit") "Edit" else "Suggest"
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)

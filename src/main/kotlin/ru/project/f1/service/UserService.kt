@@ -8,7 +8,7 @@ import ru.project.f1.entity.User
 import java.math.BigInteger
 import java.util.*
 
-interface UserService: UserDetailsService {
+interface UserService : UserDetailsService {
 
     @Transactional
     fun save(user: User): User

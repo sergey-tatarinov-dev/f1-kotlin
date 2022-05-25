@@ -75,10 +75,8 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     protected fun passwordEncoder(): PasswordEncoder? = BCryptPasswordEncoder(12)
 
     @Bean
-    fun daoAuthenticationProvider(): DaoAuthenticationProvider {
-        val daoAuthenticationProvider = DaoAuthenticationProvider()
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder())
-        daoAuthenticationProvider.setUserDetailsService(userService)
-        return daoAuthenticationProvider
+    fun daoAuthenticationProvider(): DaoAuthenticationProvider = DaoAuthenticationProvider().apply {
+        setPasswordEncoder(passwordEncoder())
+        setUserDetailsService(userService)
     }
 }

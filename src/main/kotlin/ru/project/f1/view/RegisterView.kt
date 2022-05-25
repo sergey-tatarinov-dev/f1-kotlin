@@ -1,6 +1,7 @@
 package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.kaributools.setPrimary
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.PasswordField
 import com.vaadin.flow.component.textfield.TextField
@@ -9,13 +10,13 @@ import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.User
 import ru.project.f1.service.UserService
+import ru.project.f1.utils.SecurityUtils.Companion.encoded
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.utils.UiUtils.Companion.show
-import ru.project.f1.view.fragment.HeaderBarView.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 
 @Route("register")
@@ -39,15 +40,15 @@ class RegisterView : KComposite() {
                 width = "17%"
                 h2("Register")
                 loginField = textField("Login:") {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "Enter login"
                 }
                 passwordField = passwordField("Password:") {
-                    width = "100%"
+                    setWidthFull()
                     placeholder = "Enter password"
                 }
                 button("Register") {
-                    width = "100%"
+                    setWidthFull()
                     setPrimary()
                     onLeftClick { register() }
                 }
@@ -62,7 +63,7 @@ class RegisterView : KComposite() {
             userService.findByLogin(loginField.value).ifPresentOrElse({
                 show("User with this username is already registered")
             }, {
-                val encodedPassword = BCryptPasswordEncoder(12).encode(passwordField.value)
+                val encodedPassword = passwordField.value.encoded()
                 val user = User(loginField.value, encodedPassword)
                 userService.save(user)
                 loginField.clear()

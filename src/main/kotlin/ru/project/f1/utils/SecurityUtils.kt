@@ -6,11 +6,10 @@ import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import ru.project.f1.entity.User
 import javax.servlet.http.HttpServletRequest
-
 
 class SecurityUtils {
 
@@ -44,9 +43,12 @@ class SecurityUtils {
             val allowedRoles: Array<String> = secured.value
             val userAuthentication: Authentication = SecurityContextHolder.getContext().authentication
             return userAuthentication.authorities.stream() //
-                .map { obj: GrantedAuthority -> obj.authority }
+                .map { it.authority }
                 .anyMatch(allowedRoles::contains)
         }
+
+        fun String.encoded(): String = BCryptPasswordEncoder(12).encode(this)
+
     }
 
 }

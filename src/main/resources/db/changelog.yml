@@ -12,3 +12,91 @@ databaseChangeLog:
   - include:
       file: changelog/20210607_add_created_date_to_comment.yml
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211015_add_suggested_and_deleted_to_news.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_track.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_team.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211016_create_table_driver.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_grand_prix.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_line_up.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_insert_grand_prix.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_table_grand_prix_result.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_create_functions_for_grand_prix_result.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211021_insert_grand_prix_result.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211022_insert_driver.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211025_insert_american_grand_prix_result.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_create_table_file.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_insert_files_into_table.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_add_foreign_keys.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211027_insert_countries.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211028_add_not_null_constraints.yml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211029_add_default_profile_picture.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211101_insert_teams.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211102_create_function_get_year_by_grand_prix_id.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211125_insert_brazil_spring_qualifying.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20211125_insert_mexico_brazil_and_qatar_grand_prix_result.sql
+      relativeToChangelogFile: true

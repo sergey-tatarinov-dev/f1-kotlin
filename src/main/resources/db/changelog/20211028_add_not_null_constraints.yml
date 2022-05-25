@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/20211028_add_not_null_constraints.yml
+  - changeSet:
+      id: 20211028_add_not_null_constraints
+      author: Sergey Tatarinov
+      changes:
+        - addNotNullConstraint:
+            tableName: country
+            columnName: file_id
+        - addNotNullConstraint:
+            tableName: driver
+            columnName: country_id
+        - addNotNullConstraint:
+            tableName: team
+            columnName: country_id
+        - addNotNullConstraint:
+            tableName: track
+            columnName: country_id
