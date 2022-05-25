@@ -1,7 +1,9 @@
 package ru.project.f1.entity
 
 import org.hibernate.annotations.Type
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class Standing(

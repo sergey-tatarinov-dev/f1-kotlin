@@ -7,4 +7,4 @@ import javax.persistence.Embeddable
 data class GrandPrixResultId(
     var grandPrixId: Int,
     var driverId: Int,
-): Serializable
+) : Serializable

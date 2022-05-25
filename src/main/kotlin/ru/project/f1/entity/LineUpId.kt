@@ -7,4 +7,4 @@ import javax.persistence.Embeddable
 data class LineUpId(
     var teamId: Int,
     var driverId: Int,
-): Serializable
+) : Serializable

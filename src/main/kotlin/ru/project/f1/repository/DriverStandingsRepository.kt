@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import ru.project.f1.entity.DriverStanding
 
 @Repository
-interface DriverStandingsRepository: JpaRepository<DriverStanding, Int> {
-}
+interface DriverStandingsRepository : JpaRepository<DriverStanding, Int>

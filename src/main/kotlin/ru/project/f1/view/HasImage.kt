@@ -19,7 +19,7 @@ class HasImage : KComposite() {
 
     fun imageById(id: BigInteger, alt: String, block: Image.() -> Unit = {}): Image {
         val file = fileService.findById(id).orElseThrow()
-        return imageFromPath(file.absolutePath, alt, block);
+        return imageFromPath(file.absolutePath, alt, block)
     }
 
     private fun imageFromPath(src: String, alt: String, block: Image.() -> Unit = {}): Image {

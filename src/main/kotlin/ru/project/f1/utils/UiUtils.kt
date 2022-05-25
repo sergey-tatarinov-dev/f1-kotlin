@@ -1,6 +1,9 @@
 package ru.project.f1.utils
 
-import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.horizontalLayout
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.github.mvysny.karibudsl.v10.p
 import com.github.mvysny.kaributools.setPrimary
 import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.Shortcuts

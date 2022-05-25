@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import ru.project.f1.entity.DriverStanding
 import ru.project.f1.entity.TeamStanding
-import ru.project.f1.repository.DriverStandingsRepository
 import ru.project.f1.repository.TeamStandingsRepository
 import ru.project.f1.service.TeamStandingsService
 import java.util.*
