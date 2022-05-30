@@ -27,6 +27,7 @@ import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
 import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -60,9 +61,7 @@ class NewsListView : KComposite() {
                 width = "65%"
                 horizontalLayout {
                     setWidthFull()
-                    h1("News") {
-                        style.set("flex-grow", "1")
-                    }
+                    title("News")
                     suggestedNewsButton = button().apply {
                         isVisible = false
                         onLeftClick {

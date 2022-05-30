@@ -20,13 +20,14 @@ import ru.project.f1.entity.DriverStanding
 import ru.project.f1.service.DriverStandingsService
 import ru.project.f1.service.GrandPrixResultService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.text.NumberFormat
 import kotlin.reflect.KProperty1
 
 
-@Route("driver-standings")
+@Route("drivers-standings")
 @Component
-@PageTitle("F1 | Driver standings")
+@PageTitle("F1 | Drivers standings")
 @PreserveOnRefresh
 @UIScope
 class DriverStandingsView : StandingView() {
@@ -54,14 +55,12 @@ class DriverStandingsView : StandingView() {
             setSizeFull()
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
-                width = "65%"
+                width = "85%"
                 style.set("margin-top", "0px")
                 horizontalLayout {
                     style.set("margin-top", "0px")
                     setWidthFull()
-                    h1("Drivers standings") {
-                        style.set("flex-grow", "1")
-                    }
+                    title("Drivers standings")
                     select = select {
                         label = "Year"
                     }
@@ -85,7 +84,8 @@ class DriverStandingsView : StandingView() {
             addColumns {
                 addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, driverStanding: DriverStanding ->
                     anchor.apply {
-                        text = driverStanding.name
+                        val split = driverStanding.name.split(" ")
+                        text = "${split[0]} ${split[1].uppercase()}"
                         href = "/driver/${driverStanding.id}"
                     }
                 }).setHeader("Name")

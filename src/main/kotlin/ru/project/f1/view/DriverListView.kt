@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.Driver
 import ru.project.f1.service.DriverService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 
 @Route("drivers")
 @Component
@@ -37,12 +38,12 @@ class DriverListView : KComposite() {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                h1("Drivers")
+                title("Drivers")
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
                     isAllRowsVisible = true
-                    columnFor(Driver::name, TextRenderer { "${it.name} ${it.surname}" }) {
+                    columnFor(Driver::name, TextRenderer { "${it.name} ${it.surname.uppercase()}" }) {
                         isSortable = false
                     }
                     columnFor(Driver::raceNumber) {

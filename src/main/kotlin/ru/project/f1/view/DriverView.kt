@@ -4,6 +4,7 @@ import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.html.Span
@@ -63,7 +64,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         val driver = driverService.findById(driverId.toBigInteger()).orElseThrow()
-        pageTitle = "${driver.name} ${driver.surname}"
+        pageTitle = "${driver.name} ${driver.surname.uppercase()}"
         titleLayout.apply {
             removeAll()
             add(
@@ -104,6 +105,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
                 textAlign = ColumnTextAlign.END
             }
             setItems(grandPrixList)
+            addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)
         }
     }
 

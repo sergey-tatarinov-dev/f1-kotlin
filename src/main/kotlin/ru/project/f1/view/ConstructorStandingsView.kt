@@ -20,6 +20,7 @@ import ru.project.f1.entity.TeamStanding
 import ru.project.f1.service.GrandPrixResultService
 import ru.project.f1.service.TeamStandingsService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.text.NumberFormat
 
 @Route("constructor-standings")
@@ -50,9 +51,7 @@ class ConstructorStandingsView : StandingView() {
                 horizontalLayout {
                     style.set("margin-top", "0px")
                     setWidthFull()
-                    h1("Constructors standings") {
-                        style.set("flex-grow", "1")
-                    }
+                    title("Constructors standings")
                     select = select {
                         label = "Year"
                     }
