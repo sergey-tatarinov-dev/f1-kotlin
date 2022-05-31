@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import ru.project.f1.entity.Role
 import ru.project.f1.entity.User
 import javax.servlet.http.HttpServletRequest
 
@@ -30,6 +31,8 @@ class SecurityUtils {
             val authentication = getAuthentication()
             return (authentication.principal as User)
         }
+
+        fun isAdminOrModerator() : Boolean = getUser().role in listOf(Role.ADMIN, Role.MODERATOR)
 
         private fun getAuthentication(): Authentication {
             return SecurityContextHolder.getContext().authentication

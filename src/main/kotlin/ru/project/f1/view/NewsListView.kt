@@ -23,9 +23,11 @@ import ru.project.f1.entity.News
 import ru.project.f1.entity.Role
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
+import ru.project.f1.utils.SecurityUtils.Companion.isAdminOrModerator
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
 import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.setLocation
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.time.format.DateTimeFormatter
@@ -94,7 +96,7 @@ class NewsListView : KComposite() {
                                 setLocation("/news/${if (getUser().role == Role.USER) "suggest" else "add"}/")
                             }
                         }
-                        if (getUser().role in listOf(Role.ADMIN, Role.MODERATOR)) {
+                        if (isAdminOrModerator()) {
                             editNewsButton = button("Edit news") {
                                 isEnabled = false
                                 onLeftClick {
@@ -103,7 +105,7 @@ class NewsListView : KComposite() {
                                 }
                             }
                         }
-                        if (getUser().role in listOf(Role.ADMIN, Role.MODERATOR)) {
+                        if (isAdminOrModerator()) {
                             deleteNewsButton = button("Delete news") {
                                 style.set("margin-left", "auto")
                                 isEnabled = false
@@ -135,7 +137,7 @@ class NewsListView : KComposite() {
         }
         suggestedCount = newsService.countAllBySuggested(true)
         suggestedNewsButton.apply {
-            isVisible = suggestedCount > 0 && isUserLoggedIn() && getUser().role in listOf(Role.ADMIN, Role.MODERATOR)
+            isVisible = suggestedCount > 0 && isUserLoggedIn() && isAdminOrModerator()
             text = "Suggested news (${suggestedCount})"
         }
     }
@@ -144,7 +146,7 @@ class NewsListView : KComposite() {
         newsService.deleteById(selectedNews.id)
         news.remove(selectedNews)
         grid.setItems(news.sortedWith(comparatorForGrid))
-        Notification.show("News was be successfully deleted")
+        successBox("News was be successfully deleted")
     }
 
 }
