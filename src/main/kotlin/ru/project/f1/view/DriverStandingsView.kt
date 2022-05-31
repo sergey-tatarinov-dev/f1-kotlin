@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.DriverStanding
 import ru.project.f1.service.DriverStandingsService
 import ru.project.f1.service.GrandPrixResultService
+import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.text.NumberFormat
@@ -34,6 +35,8 @@ class DriverStandingsView : StandingView() {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+    @Autowired
+    private lateinit var grandPrixService: GrandPrixService
 
     @Autowired
     private lateinit var driverStandingsService: DriverStandingsService
@@ -93,7 +96,7 @@ class DriverStandingsView : StandingView() {
             }
         }
         select.apply {
-            val years = grandPrixResultService.findAllYears().map { it.toString() }
+            val years = grandPrixService.findAllYears().map { it.toString() }
             setItems(years)
             value = years.last()
         }

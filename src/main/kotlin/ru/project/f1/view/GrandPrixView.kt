@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.GrandPrixResultPerGrandPrix
 import ru.project.f1.service.GrandPrixResultService
+import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 @Route("grand-prix/:id")
@@ -25,6 +26,8 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+    @Autowired
+    private lateinit var grandPrixService: GrandPrixService
     private lateinit var grandPrixId: String
     private lateinit var titleLayout: HorizontalLayout
     private lateinit var grid: Grid<GrandPrixResultPerGrandPrix>
@@ -55,7 +58,7 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
             setItems(grandPrixList)
         }
-        val grandPrix = grandPrixResultService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
+        val grandPrix = grandPrixService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
         pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
         val country = grandPrix.track.country
         titleLayout.apply {

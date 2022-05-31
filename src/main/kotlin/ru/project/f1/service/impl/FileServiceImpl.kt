@@ -23,16 +23,16 @@ class FileServiceImpl : FileService {
     @Autowired
     private lateinit var fileRepository: FileRepository
 
-    override fun save(file: File): F1File {
+    override fun save(file: File, fileName: String, fileContent: ByteArray): F1File {
         val f1File = F1File()
         f1File.apply {
-            val fileName = file.path.split("\\\\")
-            val split = fileName[2].split("\\.")
-            name = split[0]
+            val split = file.path.split(".")
+            name = fileName
             extension = split[1]
+            fullPath = file.path
         }
         val savedFile = fileRepository.save(f1File)
-        Files.move(file.toPath(), Paths.get(fileStorageRootPath))
+        Files.write(Paths.get(fileStorageRootPath + file.path), fileContent)
         return savedFile
     }
 

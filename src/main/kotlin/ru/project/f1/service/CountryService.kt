@@ -3,20 +3,19 @@ package ru.project.f1.service
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
-import ru.project.f1.entity.F1File
-import java.io.File
+import ru.project.f1.entity.Country
 import java.math.BigInteger
 import java.util.*
 
-interface FileService {
+interface CountryService {
 
     @Transactional
-    fun save(file: File, fileName: String, fileContent: ByteArray): F1File
+    fun save(country: Country): Country
 
-    fun findById(id: BigInteger): Optional<File>
+    fun findById(id: BigInteger): Optional<Country>
 
     @Transactional
     fun deleteById(id: BigInteger)
 
-    fun findAll(pageable: Pageable): Page<F1File>
+    fun findAll(pageable: Pageable): Page<Country>
 }

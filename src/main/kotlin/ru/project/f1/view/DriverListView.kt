@@ -5,6 +5,7 @@ import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.*
+import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.data.renderer.TextRenderer
 import com.vaadin.flow.router.PageTitle
@@ -60,5 +61,15 @@ class DriverListView : KComposite() {
         super.onAttach(attachEvent)
         drivers = driverService.findAll(PageRequest.of(0, 20)).toMutableList()
         grid.setItems(drivers)
+        grid.apply {
+            removeAllColumns()
+            addComponentColumn {
+                Anchor("/driver/${it.id}", "${it.name} ${it.surname.uppercase()}")
+            }
+            columnFor(Driver::raceNumber) {
+                isSortable = false
+                textAlign = ColumnTextAlign.END
+            }
+        }
     }
 }
