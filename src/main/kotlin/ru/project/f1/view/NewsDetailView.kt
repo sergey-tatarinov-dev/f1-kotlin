@@ -5,9 +5,10 @@ import com.github.mvysny.kaributools.setPrimary
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Html
 import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.html.*
-import com.vaadin.flow.component.icon.Icon
-import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.html.H1
+import com.vaadin.flow.component.html.H3
+import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.router.*
@@ -21,11 +22,13 @@ import ru.project.f1.service.CommentService
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
-import ru.project.f1.utils.UiUtils.Companion.customDialog
+import ru.project.f1.utils.UiUtils.Companion.failBox
 import ru.project.f1.utils.UiUtils.Companion.reload
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.utils.UiUtils.Companion.show
 import ru.project.f1.utils.Utils.Companion.toFormatted
+import ru.project.f1.view.fragment.Components.Companion.createEditButton
+import ru.project.f1.view.fragment.Components.Companion.createParagraph
+import ru.project.f1.view.fragment.Components.Companion.createRemoveButton
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.setError
 import java.time.format.DateTimeFormatter
@@ -101,7 +104,7 @@ class NewsDetailView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
                                 isEnabled = false
                                 reload()
                             } else {
-                                show("Comment cannot be empty")
+                                failBox("Comment cannot be empty")
                             }
                         } else {
                             setLocation("/login")
@@ -198,59 +201,28 @@ class NewsDetailView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
                         },
                         horizontalLayout {
                             if (isUserLoggedIn() && getUser() == user) {
-                                add(createEditButton(comment), createRemoveButton(comment))
+                                add(
+                                    createEditButton {
+                                        selectedComment = comment
+                                        commentsField.apply {
+                                            value = comment.text
+                                            isEnabled = true
+                                            focus()
+                                        }
+                                        publishCommentButton.apply {
+                                            text = "Edit"
+                                            isEnabled = true
+                                        }
+                                    },
+                                    createRemoveButton {
+                                        commentService.deleteById(comment.id)
+                                    }
+                                )
                             }
                         }
                     )
                 }
             )
-        }
-    }
-
-    private fun createEditButton(comment: Comment): Icon {
-        return createButton(VaadinIcon.PENCIL) {
-            selectedComment = comment
-            commentsField.apply {
-                value = comment.text
-                isEnabled = true
-                focus()
-            }
-            publishCommentButton.apply {
-                text = "Edit"
-                isEnabled = true
-            }
-        }
-    }
-
-    private fun createRemoveButton(comment: Comment): Icon {
-        return createButton(VaadinIcon.CLOSE) {
-            customDialog("Are you sure you want to delete the comment?") {
-                commentService.deleteById(comment.id)
-                reload()
-            }
-        }
-    }
-
-    private fun createParagraph(value: String): Paragraph {
-        return Paragraph(value).apply {
-            style.apply {
-                set("font-size", "18px")
-                set("line-height", "0.5")
-            }
-            setWidthFull()
-        }
-    }
-
-    private fun createButton(vaadinIcon: VaadinIcon, action: Icon.() -> Unit): Icon {
-        return Icon(vaadinIcon).apply {
-            style.apply {
-                set("height", "14px")
-                set("padding-top", "10px")
-                set("cursor", "pointer")
-            }
-            addClickListener {
-                action()
-            }
         }
     }
 

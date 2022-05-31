@@ -16,9 +16,11 @@ import com.vaadin.flow.router.Route
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import ru.project.f1.entity.Action.*
 import ru.project.f1.entity.GrandPrix
 import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.dialog.GrandPrixDialog
+import ru.project.f1.view.fragment.Components.Companion.createEditButton
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.time.LocalDate
@@ -57,7 +59,7 @@ class GrandPrixListView : HasImage() {
                     title("Grand Prix")
                     button("Add Grand Prix") {
                         onLeftClick {
-                            grandPrixDialog.openAndThen {
+                            grandPrixDialog.openAndThen(CREATE) {
                                 grid.setItems(grandPrixService.findAllGrandPrixByYear(2021))
                             }
                         }
@@ -96,11 +98,28 @@ class GrandPrixListView : HasImage() {
                 Anchor("/grand-prix/${it.id}", image, text).apply {
                     style.set("display", "inline-flex")
                 }
+            }.apply {
+                flexGrow = 3
             }
+            addComponentColumn {
+                Span(it.track.circuitName)
+            }.apply { flexGrow = 3 }
             columnFor(createdDateRef, renderer) {
                 isSortable = false
+                flexGrow = 3
                 textAlign = ColumnTextAlign.END
                 setHeader("")
+                setWidthFull()
+            }
+            addComponentColumn {
+                createEditButton {
+                    grandPrixDialog.openAndThen(EDIT, it) {
+                        grid.setItems(grandPrixService.findAllGrandPrixByYear(2021))
+                    }
+                }
+            }.apply {
+                flexGrow = 0
+                textAlign = ColumnTextAlign.CENTER
             }
             setItems(grandPrixList)
             addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)

@@ -17,6 +17,7 @@ import ru.project.f1.entity.Track
 import ru.project.f1.service.CountryService
 import ru.project.f1.service.TrackService
 import ru.project.f1.utils.UiUtils.Companion.notNull
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.Components.Companion.numberField1
 import ru.project.f1.view.fragment.Components.Companion.textField1
 import java.util.function.Consumer
@@ -90,6 +91,7 @@ class TrackDialog : ConfirmDialog() {
                     )
                 )
                 consumer.accept(savedTrack!!)
+                successBox("Track successfully saved")
             }
         })
     }

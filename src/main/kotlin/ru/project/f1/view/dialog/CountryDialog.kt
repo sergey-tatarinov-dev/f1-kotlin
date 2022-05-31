@@ -15,6 +15,7 @@ import ru.project.f1.entity.Country
 import ru.project.f1.service.CountryService
 import ru.project.f1.service.FileService
 import ru.project.f1.utils.UiUtils.Companion.notNull
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.Components.Companion.textField1
 import java.io.File
 import java.util.function.Consumer
@@ -65,6 +66,7 @@ class CountryDialog : ConfirmDialog() {
             val savedFile = fileService.save(file, countryTextField.value, fileContent!!)
             savedCountry = countryService.save(Country(name = countryTextField.value, f1File = savedFile))
             consumer.accept(savedCountry!!)
+            successBox("Country successfully saved")
         })
     }
 

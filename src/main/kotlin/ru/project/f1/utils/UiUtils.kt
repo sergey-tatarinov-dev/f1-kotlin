@@ -11,6 +11,8 @@ import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.dialog.Dialog
+import com.vaadin.flow.component.notification.Notification
+import com.vaadin.flow.component.notification.NotificationVariant
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.component.textfield.NumberField
@@ -20,6 +22,18 @@ import com.vaadin.flow.server.Command
 class UiUtils {
 
     companion object {
+
+        fun successBox(msg: String) {
+            Notification(msg, 3000, Notification.Position.MIDDLE).apply {
+                addThemeVariants(NotificationVariant.LUMO_SUCCESS, NotificationVariant.LUMO_PRIMARY)
+            }.open()
+        }
+
+        fun failBox(msg: String) {
+            Notification(msg, 3000, Notification.Position.MIDDLE).apply {
+                addThemeVariants(NotificationVariant.LUMO_ERROR, NotificationVariant.LUMO_PRIMARY)
+            }.open()
+        }
 
         fun customDialog(dialogMessage: String, action: Button.() -> Unit) {
             val dialog = Dialog().apply {
@@ -59,16 +73,6 @@ class UiUtils {
 
         fun setLocation(url: String) {
             UI.getCurrent().page.setLocation(url)
-        }
-
-        fun navigate(url: String) {
-            UI.getCurrent().navigate(url)
-        }
-
-        fun show(message: String) {
-            val dialog = Dialog()
-            dialog.add(message)
-            dialog.open()
         }
 
         fun NumberField.notNull(): Boolean = this.value != null

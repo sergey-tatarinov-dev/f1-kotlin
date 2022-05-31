@@ -2,9 +2,12 @@ package ru.project.f1.view.dialog
 
 import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.kaributools.setPrimary
+import com.vaadin.flow.component.Key
+import com.vaadin.flow.component.Shortcuts
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.server.Command
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.lang.NonNull
 import org.springframework.stereotype.Component
@@ -24,6 +27,7 @@ abstract class ConfirmDialog : Dialog() {
         return verticalLayout {
             style.set("padding", "0px")
             isResizable = true; isModal = false; isDraggable = true
+            Shortcuts.addShortcutListener(this, Command { close() }, Key.ESCAPE)
             verticalLayout {
                 style.set("padding", "0px")
                 h3(windowTitle)

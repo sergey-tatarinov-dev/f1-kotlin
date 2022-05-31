@@ -9,11 +9,11 @@ import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.GrandPrix
-import ru.project.f1.entity.Track
+import ru.project.f1.entity.*
 import ru.project.f1.service.GrandPrixService
 import ru.project.f1.service.TrackService
 import ru.project.f1.utils.UiUtils.Companion.notNull
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.Components.Companion.textField1
 import java.util.function.Consumer
 import javax.annotation.PostConstruct
@@ -34,7 +34,9 @@ class GrandPrixDialog : ConfirmDialog() {
     private lateinit var trackSelect: Select<Track>
     private lateinit var grandPrixDatePicker: DatePicker
     private lateinit var consumer: Consumer<GrandPrix>
+    private var action: Action? = null
     private var savedGrandPrix: GrandPrix? = null
+    private var editableGrandPrix: GrandPrix? = null
 
     @PostConstruct
     fun init() {
@@ -74,14 +76,23 @@ class GrandPrixDialog : ConfirmDialog() {
                 }
             }
         }, {
-            savedGrandPrix = grandPrixService.save(
-                GrandPrix(
-                    date = grandPrixDatePicker.value,
-                    fullName = grandPrixNameTextField.value,
-                    track = trackSelect.value
-                )
+            val grandPrix = GrandPrix(
+                date = grandPrixDatePicker.value,
+                fullName = grandPrixNameTextField.value,
+                track = trackSelect.value
             )
+            if (action == Action.EDIT) {
+                grandPrix.apply {
+                    id = editableGrandPrix!!.id
+                    grandPrixOver = editableGrandPrix!!.grandPrixOver
+                    deleted = editableGrandPrix!!.deleted
+                    sprint = editableGrandPrix!!.sprint
+                    needApplyHalfPointsMultiplier = editableGrandPrix!!.needApplyHalfPointsMultiplier
+                }
+            }
+            savedGrandPrix = grandPrixService.save(grandPrix)
             consumer.accept(savedGrandPrix!!)
+            successBox("Grand Prix successfully ${if (action == Action.EDIT) "edited" else "saved"}")
         })
     }
 
@@ -95,7 +106,14 @@ class GrandPrixDialog : ConfirmDialog() {
         grandPrixDatePicker.clear()
     }
 
-    fun openAndThen(cons: Consumer<GrandPrix>) {
+    fun openAndThen(act: Action, grandPrix: GrandPrix? = null, cons: Consumer<GrandPrix>) {
+        action = act
+        if (action == Action.EDIT) {
+            grandPrixNameTextField.value = grandPrix?.fullName
+            grandPrixDatePicker.value = grandPrix?.date
+            trackSelect.value = grandPrix?.track
+        }
+        editableGrandPrix = grandPrix
         consumer = cons
         open()
     }
