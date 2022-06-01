@@ -21,8 +21,10 @@ import ru.project.f1.entity.GrandPrix
 import ru.project.f1.service.GrandPrixService
 import ru.project.f1.utils.SecurityUtils.Companion.isAdminOrModerator
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.dialog.GrandPrixDialog
 import ru.project.f1.view.fragment.Components.Companion.createEditButton
+import ru.project.f1.view.fragment.Components.Companion.createRemoveButton
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.time.LocalDate
@@ -63,7 +65,7 @@ class GrandPrixListView : HasImage() {
                         button("Add Grand Prix") {
                             onLeftClick {
                                 grandPrixDialog.openAndThen(CREATE) {
-                                    grid.setItems(grandPrixService.findAllGrandPrixByYear(2021))
+                                    updateView()
                                 }
                             }
                         }
@@ -82,7 +84,8 @@ class GrandPrixListView : HasImage() {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
-        val grandPrixList = grandPrixService.findAllGrandPrixByYear(2021)
+        val year = grandPrixService.findAllYears().map { it.toString() }.last()
+        val grandPrixList = grandPrixService.findAllGrandPrixByYear(year.toInt())
         grid.apply {
             removeAllColumns()
             addComponentColumn {
@@ -107,7 +110,9 @@ class GrandPrixListView : HasImage() {
             }
             addComponentColumn {
                 Span(it.track.circuitName)
-            }.apply { flexGrow = 3 }
+            }.apply {
+                flexGrow = 3
+            }
             columnFor(createdDateRef, renderer) {
                 isSortable = false
                 flexGrow = 3
@@ -119,11 +124,23 @@ class GrandPrixListView : HasImage() {
                 addComponentColumn {
                     createEditButton {
                         grandPrixDialog.openAndThen(EDIT, it) {
-                            grid.setItems(grandPrixService.findAllGrandPrixByYear(2021))
+                            updateView()
                         }
                     }
                 }.apply {
                     flexGrow = 0
+                    width = "70px"
+                    textAlign = ColumnTextAlign.CENTER
+                }
+                addComponentColumn {
+                    createRemoveButton {
+                        grandPrixService.deleteById(it.id)
+                        successBox("Grand Prix has been successfully deleted")
+                        updateView()
+                    }
+                }.apply {
+                    flexGrow = 0
+                    width = "70px"
                     textAlign = ColumnTextAlign.CENTER
                 }
             }
@@ -136,8 +153,17 @@ class GrandPrixListView : HasImage() {
             setItems(years)
             value = years.last()
             addValueChangeListener {
-                grid.setItems(grandPrixService.findAllGrandPrixByYear(it.value.toInt()))
+                if (it != null && it.value != null) {
+                    grid.setItems(grandPrixService.findAllGrandPrixByYear(it.value.toInt()))
+                }
             }
         }
+    }
+
+    fun updateView() {
+        val years = grandPrixService.findAllYears().map { it.toString() }
+        select.setItems(years)
+        select.value = years.last()
+        grid.setItems(grandPrixService.findAllGrandPrixByYear(years.last().toInt()))
     }
 }

@@ -8,7 +8,6 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.*
-import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer
 import com.vaadin.flow.router.PageTitle
@@ -146,7 +145,7 @@ class NewsListView : KComposite() {
         newsService.deleteById(selectedNews.id)
         news.remove(selectedNews)
         grid.setItems(news.sortedWith(comparatorForGrid))
-        successBox("News was be successfully deleted")
+        successBox("News has been successfully deleted")
     }
 
 }

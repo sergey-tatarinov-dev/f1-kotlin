@@ -66,7 +66,8 @@ class CountryDialog : ConfirmDialog() {
             val savedFile = fileService.save(file, countryTextField.value, fileContent!!)
             savedCountry = countryService.save(Country(name = countryTextField.value, f1File = savedFile))
             consumer.accept(savedCountry!!)
-            successBox("Country successfully saved")
+            successBox("Country has been successfully saved")
+            close()
         })
     }
 

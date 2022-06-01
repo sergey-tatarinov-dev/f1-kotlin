@@ -35,12 +35,12 @@ class DriverStandingsView : StandingView() {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+
     @Autowired
     private lateinit var grandPrixService: GrandPrixService
 
     @Autowired
     private lateinit var driverStandingsService: DriverStandingsService
-
     private lateinit var driverStandings: List<DriverStanding>
     private lateinit var grid: Grid<DriverStanding>
     private lateinit var select: Select<String>

@@ -22,6 +22,7 @@ import ru.project.f1.service.CommentService
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.SecurityUtils.Companion.isUserLoggedIn
+import ru.project.f1.utils.UiUtils.Companion.customDialog
 import ru.project.f1.utils.UiUtils.Companion.failBox
 import ru.project.f1.utils.UiUtils.Companion.reload
 import ru.project.f1.utils.UiUtils.Companion.setLocation
@@ -215,7 +216,10 @@ class NewsDetailView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
                                         }
                                     },
                                     createRemoveButton {
-                                        commentService.deleteById(comment.id)
+                                        customDialog("Are you sure you want to delete the comment?") {
+                                            commentService.deleteById(comment.id)
+                                            reload()
+                                        }
                                     }
                                 )
                             }

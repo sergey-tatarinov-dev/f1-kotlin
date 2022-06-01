@@ -60,20 +60,9 @@ class Components {
             }
         }
 
-        fun createRemoveButton(action: Icon.() -> Unit): Icon {
-            return createButton(VaadinIcon.CLOSE) {
-                UiUtils.customDialog("Are you sure you want to delete the comment?") {
-                    action()
-                    UiUtils.reload()
-                }
-            }
-        }
+        fun createRemoveButton(action: Icon.() -> Unit): Icon = createButton(VaadinIcon.CLOSE, action)
 
-        fun createEditButton(action: Icon.() -> Unit): Icon {
-            return createButton(VaadinIcon.PENCIL) {
-                action()
-            }
-        }
+        fun createEditButton(action: Icon.() -> Unit): Icon = createButton(VaadinIcon.PENCIL, action)
 
         private fun createButton(vaadinIcon: VaadinIcon, action: Icon.() -> Unit): Icon {
             return Icon(vaadinIcon).apply {

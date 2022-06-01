@@ -69,7 +69,7 @@ class RegisterView : KComposite() {
                 userService.save(user)
                 loginField.clear()
                 passwordField.clear()
-                successBox("Registration is successfully ended")
+                successBox("Registration has been successfully ended")
                 setLocation("/login")
             })
         }

@@ -92,7 +92,8 @@ class GrandPrixDialog : ConfirmDialog() {
             }
             savedGrandPrix = grandPrixService.save(grandPrix)
             consumer.accept(savedGrandPrix!!)
-            successBox("Grand Prix successfully ${if (action == Action.EDIT) "edited" else "saved"}")
+            successBox("Grand Prix has been successfully ${if (action == Action.EDIT) "edited" else "saved"}")
+            close()
         })
     }
 

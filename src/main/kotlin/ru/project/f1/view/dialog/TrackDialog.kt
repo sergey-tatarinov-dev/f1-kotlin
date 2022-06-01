@@ -91,7 +91,8 @@ class TrackDialog : ConfirmDialog() {
                     )
                 )
                 consumer.accept(savedTrack!!)
-                successBox("Track successfully saved")
+                successBox("Track has been successfully saved")
+                close()
             }
         })
     }
