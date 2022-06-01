@@ -6,8 +6,8 @@ import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
+import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.orderedlayout.FlexComponent
-import com.vaadin.flow.data.renderer.TextRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
@@ -25,7 +25,7 @@ import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 @PageTitle("F1 | Drivers")
 @PreserveOnRefresh
 @UIScope
-class DriverListView : KComposite() {
+class DriverListView : HasImage() {
 
     @Autowired
     private lateinit var driverService: DriverService
@@ -44,9 +44,24 @@ class DriverListView : KComposite() {
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
                     isAllRowsVisible = true
-                    columnFor(Driver::name, TextRenderer { "${it.name} ${it.surname.uppercase()}" }) {
-                        isSortable = false
-                    }
+                    addComponentColumn {
+                        val driver =
+                            driverService.findById(it.id).orElseThrow()
+                        val country = driver.country
+                        val image = imageById(country.f1File.id, it.name) {
+                            height = "20px"
+                            width = "30px"
+                        }
+                        val text = Span("${it.name} ${it.surname.uppercase()}").apply {
+                            style.apply {
+                                set("margin-left", "10px")
+                                set("align-self", "center")
+                            }
+                        }
+                        Anchor("/driver/${it.id}", image, text).apply {
+                            style.set("display", "inline-flex")
+                        }
+                    }.setHeader("Name")
                     columnFor(Driver::raceNumber) {
                         isSortable = false
                         textAlign = ColumnTextAlign.END
@@ -61,15 +76,5 @@ class DriverListView : KComposite() {
         super.onAttach(attachEvent)
         drivers = driverService.findAll(PageRequest.of(0, 20)).toMutableList()
         grid.setItems(drivers)
-        grid.apply {
-            removeAllColumns()
-            addComponentColumn {
-                Anchor("/driver/${it.id}", "${it.name} ${it.surname.uppercase()}")
-            }
-            columnFor(Driver::raceNumber) {
-                isSortable = false
-                textAlign = ColumnTextAlign.END
-            }
-        }
     }
 }

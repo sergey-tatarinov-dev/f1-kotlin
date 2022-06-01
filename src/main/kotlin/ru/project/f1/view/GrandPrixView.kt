@@ -5,10 +5,11 @@ import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
+import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H1
+import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
-import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,7 @@ import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 @Component
 @PreserveOnRefresh
 @UIScope
-class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
+class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
@@ -85,35 +86,37 @@ class GrandPrixView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             isExpand = false
         }
 
-        addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, it: GrandPrixResultPerGrandPrix ->
-            val split = it.driverName.split(" ")
-            anchor.apply {
-                text = "${split[0]} ${split[1].uppercase()}"
-                href = "/driver/${it.driverId}"
-            }
-        }).setHeader("Driver")
-
         addComponentColumn {
-            imageById(it.countryId, it.driverName) {
+            val image = imageById(it.countryId, it.driverName) {
                 height = "20px"
                 width = "30px"
             }
-        }.apply {
-            isExpand = false
-        }
-
-        columnFor(GrandPrixResultPerGrandPrix::teamName) {
-            isSortable = false
-            setHeader("Team")
-        }
-
+            val split = it.driverName.split(" ")
+            val text = Span("${split[0]} ${split[1].uppercase()}").apply {
+                style.apply {
+                    set("margin-left", "10px")
+                    set("align-self", "center")
+                }
+            }
+            Anchor("/driver/${it.driverId}", image, text).apply {
+                style.set("display", "inline-flex")
+            }
+        }.setHeader("Driver")
         addComponentColumn {
-            imageById(it.logoId, it.teamName) {
+            val image = imageById(it.logoId, it.teamName) {
                 height = "25px"
                 width = "25px"
             }
+            val text = Span(it.teamName).apply {
+                style.apply {
+                    set("margin-left", "10px")
+                    set("align-self", "center")
+                }
+            }
+            Div(image, text)
         }.apply {
-            isExpand = false
+            setHeader("Team")
+            isSortable = false
         }
     }
 }

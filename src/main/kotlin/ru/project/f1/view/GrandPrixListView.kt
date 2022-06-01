@@ -135,6 +135,9 @@ class GrandPrixListView : HasImage() {
             val years = grandPrixService.findAllYears().map { it.toString() }
             setItems(years)
             value = years.last()
+            addValueChangeListener {
+                grid.setItems(grandPrixService.findAllGrandPrixByYear(it.value.toInt()))
+            }
         }
     }
 }
