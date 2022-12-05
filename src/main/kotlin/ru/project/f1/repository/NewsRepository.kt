@@ -16,15 +16,27 @@ interface NewsRepository : JpaRepository<News, BigInteger> {
 
     fun countAllBySuggested(suggested: Boolean): Int
 
-    @Query("update News set suggested = false where id = :id")
+    @Query("""
+        update News
+        set suggested = false 
+        where id = :id
+    """)
     @Modifying
     fun publish(id: BigInteger)
 
-    @Query("update News set suggested = false, deleted = true where id = :id")
+    @Query("""
+        update News
+        set suggested = false, deleted = true
+        where id = :id
+    """)
     @Modifying
     fun refuse(id: BigInteger)
 
-    @Query("update News set deleted = true where id = :id")
+    @Query("""
+        update News
+        set deleted = true 
+        where id = :id
+    """)
     @Modifying
     override fun deleteById(id: BigInteger)
 }

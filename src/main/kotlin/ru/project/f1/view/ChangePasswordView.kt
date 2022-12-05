@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component
 import ru.project.f1.service.UserService
 import ru.project.f1.utils.SecurityUtils.Companion.encoded
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
+import ru.project.f1.utils.UiUtils.Companion.failBox
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.utils.UiUtils.Companion.show
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 
@@ -81,10 +81,10 @@ class ChangePasswordView : KComposite() {
                 userService.save(user)
                 setLocation("/profile/${user.login}")
             } else {
-                show("Password mismatch")
+                failBox("Password mismatch")
             }
         } else {
-            show("Wrong old password")
+            failBox("Wrong old password")
         }
     }
 }

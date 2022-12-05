@@ -4,6 +4,7 @@ import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.html.Span
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.GrandPrixResultPerDriver
 import ru.project.f1.service.DriverService
 import ru.project.f1.service.GrandPrixResultService
+import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.text.NumberFormat
 import kotlin.reflect.KProperty1
@@ -32,6 +34,8 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+    @Autowired
+    private lateinit var grandPrixService: GrandPrixService
     private lateinit var driverId: String
     private lateinit var titleLayout: HorizontalLayout
     private lateinit var grid: Grid<GrandPrixResultPerDriver>
@@ -63,7 +67,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
         val driver = driverService.findById(driverId.toBigInteger()).orElseThrow()
-        pageTitle = "${driver.name} ${driver.surname}"
+        pageTitle = "${driver.name} ${driver.surname.uppercase()}"
         titleLayout.apply {
             removeAll()
             add(
@@ -80,7 +84,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             removeAllColumns()
             addComponentColumn {
                 val grandPrix =
-                    grandPrixResultService.findGrandPrixById(it.grandPrixId).orElseThrow()
+                    grandPrixService.findGrandPrixById(it.grandPrixId).orElseThrow()
                 pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
                 val country = grandPrix.track.country
                 val image = imageById(country.f1File.id, it.grandPrixName) {
@@ -104,6 +108,7 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
                 textAlign = ColumnTextAlign.END
             }
             setItems(grandPrixList)
+            addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)
         }
     }
 

@@ -18,8 +18,10 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.TeamStanding
 import ru.project.f1.service.GrandPrixResultService
+import ru.project.f1.service.GrandPrixService
 import ru.project.f1.service.TeamStandingsService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.text.NumberFormat
 
 @Route("constructor-standings")
@@ -31,6 +33,8 @@ class ConstructorStandingsView : StandingView() {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+    @Autowired
+    private lateinit var grandPrixService: GrandPrixService
 
     @Autowired
     private lateinit var teamStandingsService: TeamStandingsService
@@ -50,9 +54,7 @@ class ConstructorStandingsView : StandingView() {
                 horizontalLayout {
                     style.set("margin-top", "0px")
                     setWidthFull()
-                    h1("Constructors standings") {
-                        style.set("flex-grow", "1")
-                    }
+                    title("Constructors standings")
                     select = select {
                         label = "Year"
                     }
@@ -87,7 +89,7 @@ class ConstructorStandingsView : StandingView() {
             }
         }
         select.apply {
-            val years = grandPrixResultService.findAllYears().map { it.toString() }
+            val years = grandPrixService.findAllYears().map { it.toString() }
             setItems(years)
             value = years.last()
         }

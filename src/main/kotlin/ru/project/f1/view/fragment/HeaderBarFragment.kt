@@ -1,16 +1,15 @@
 package ru.project.f1.view.fragment
 
-import com.github.mvysny.karibudsl.v10.VaadinDsl
-import com.github.mvysny.karibudsl.v10.init
-import com.github.mvysny.karibudsl.v10.menuBar
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.menubar.MenuBar
-import com.vaadin.flow.component.notification.Notification
+import com.vaadin.flow.component.notification.Notification.show
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import ru.project.f1.utils.SecurityUtils
-import ru.project.f1.utils.UiUtils
+import ru.project.f1.utils.UiUtils.Companion.setLocation
 
 class HeaderBarFragment {
 
@@ -34,19 +33,37 @@ class HeaderBarFragment {
             val menuBar: MenuBar = MenuBar().apply {
                 setSizeFull()
                 addItem("News") {
-                    Notification.show("News")
-                    UiUtils.setLocation("/news")
+                    show("News")
+                    setLocation("/news")
                 }
-                addItem("Driver Standings") {
-                    Notification.show("Driver Standings")
-                    UiUtils.setLocation("/driver-standings")
+                addItem("Drivers") {
+                    show("Drivers")
+                    setLocation("/drivers")
+                }
+                addItem("Grand Prix") {
+                    show("Grand Prix")
+                    setLocation("/grand-prix")
+                }
+                addItem("Drivers Standings") {
+                    show("Drivers Standings")
+                    setLocation("/drivers-standings")
                 }
                 addItem("Constructor Standings") {
-                    Notification.show("Constructor Standings")
-                    UiUtils.setLocation("/constructor-standings")
+                    show("Constructor Standings")
+                    setLocation("/constructor-standings")
                 }
             }
             return init(menuBar, block)
+        }
+
+        @VaadinDsl
+        fun (@VaadinDsl HasComponents).title(label: String = "", block: (@VaadinDsl H1).() -> Unit = {}): H1 {
+            val h1: H1 = h1(label).apply {
+                style.set("margin-top", "0px")
+                style.set("margin-bottom", "0px")
+                style.set("flex-grow", "1")
+            }
+            return init(h1, block)
         }
 
         @VaadinDsl
@@ -58,15 +75,15 @@ class HeaderBarFragment {
                     if (SecurityUtils.isUserLoggedIn()) {
                         val login = SecurityUtils.getUser().login
                         addItem(login) {
-                            UiUtils.setLocation("/profile/${login}")
+                            setLocation("/profile/${login}")
                         }
                         addItem("Log out") {
-                            UiUtils.setLocation("/logout")
+                            setLocation("/logout")
                         }
                     } else {
                         addItem("Login") {
-                            Notification.show("Login")
-                            UiUtils.setLocation("/login")
+                            show("Login")
+                            setLocation("/login")
                         }
                     }
                 }

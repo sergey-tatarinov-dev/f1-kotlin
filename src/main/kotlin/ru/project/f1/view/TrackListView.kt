@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.Track
 import ru.project.f1.service.TrackService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 
 @Route("tracks")
 @Component
@@ -36,7 +37,7 @@ class TrackListView : KComposite() {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                h1("Tracks")
+                title("Tracks")
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)

@@ -3,16 +3,16 @@
 --changeset Sergey Tatarinov:20211101_insert_teams
 
 INSERT INTO file (name, full_path, extension) VALUES
-('mercedes', '/pic/mercedes.png', 'png'),
-('red-bull', '/pic/red-bull.png', 'png'),
-('mclaren', '/pic/mclaren.png', 'png'),
-('aston-martin', '/pic/aston-martin.png', 'png'),
-('alpine', '/pic/alpine.png', 'png'),
-('ferrari', '/pic/ferrari.png', 'png'),
-('alpha-tauri', '/pic/alpha-tauri.png', 'png'),
-('alfa-romeo', '/pic/alfa-romeo.png', 'png'),
-('haas', '/pic/haas.png', 'png'),
-('williams', '/pic/williams.png', 'png');
+('mercedes', 'mercedes.png', 'png'),
+('red-bull', 'red-bull.png', 'png'),
+('mclaren', 'mclaren.png', 'png'),
+('aston-martin', 'aston-martin.png', 'png'),
+('alpine', 'alpine.png', 'png'),
+('ferrari', 'ferrari.png', 'png'),
+('alpha-tauri', 'alpha-tauri.png', 'png'),
+('alfa-romeo', 'alfa-romeo.png', 'png'),
+('haas', 'haas.png', 'png'),
+('williams', 'williams.png', 'png');
 
 ALTER TABLE team ADD COLUMN logo_id BIGINT;
 ALTER TABLE team ADD CONSTRAINT fk_team_file_id FOREIGN KEY (logo_id) REFERENCES file (id);

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.Team
 import ru.project.f1.service.TeamService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 
 @Route("teams")
 @Component
@@ -36,7 +37,7 @@ class TeamListView : KComposite() {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                h1("Teams")
+                title("Teams")
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)

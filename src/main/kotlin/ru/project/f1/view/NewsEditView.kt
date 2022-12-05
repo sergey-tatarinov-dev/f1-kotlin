@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.News
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
+import ru.project.f1.utils.UiUtils.Companion.failBox
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.utils.UiUtils.Companion.show
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import java.time.LocalDateTime
 
@@ -64,7 +64,7 @@ class NewsEditView : KComposite(), BeforeEnterObserver {
                         saveNewsButton = button("Save news") {
                             onLeftClick {
                                 if (newsText.isEmpty || newsTitle.isEmpty) {
-                                    show("Title or text isn't filled")
+                                    failBox("Title or text isn't filled")
                                 } else {
                                     val news = if (newId.isEmpty()) {
                                         News(getUser(), LocalDateTime.now())

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import ru.project.f1.utils.SecurityUtils.Companion.getUser
 import ru.project.f1.utils.UiUtils.Companion.setLocation
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 
 @Route("profile/:login")
 @Component
@@ -28,7 +29,7 @@ class ProfileView : HasImage(), BeforeEnterObserver {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "17%"
-                h1("My profile")
+                title("My profile")
                 div = div {}
                 textField("Login") {
                     value = getUser().login

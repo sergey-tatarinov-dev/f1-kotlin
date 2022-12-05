@@ -14,8 +14,9 @@ import org.springframework.stereotype.Component
 import ru.project.f1.entity.User
 import ru.project.f1.service.UserService
 import ru.project.f1.utils.SecurityUtils.Companion.encoded
+import ru.project.f1.utils.UiUtils.Companion.failBox
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.utils.UiUtils.Companion.show
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 
 
@@ -58,17 +59,17 @@ class RegisterView : KComposite() {
 
     fun register() {
         if (loginField.isEmpty || passwordField.isEmpty) {
-            show("At least one of fields is empty")
+            failBox("At least one of fields is empty")
         } else {
             userService.findByLogin(loginField.value).ifPresentOrElse({
-                show("User with this username is already registered")
+                failBox("User with this username is already registered")
             }, {
                 val encodedPassword = passwordField.value.encoded()
                 val user = User(loginField.value, encodedPassword)
                 userService.save(user)
                 loginField.clear()
                 passwordField.clear()
-                show("Registration is successfully ended")
+                successBox("Registration has been successfully ended")
                 setLocation("/login")
             })
         }

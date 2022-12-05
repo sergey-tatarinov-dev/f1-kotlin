@@ -20,6 +20,7 @@ import ru.project.f1.entity.News
 import ru.project.f1.service.NewsService
 import ru.project.f1.utils.UiUtils
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -48,7 +49,7 @@ class SuggestedNewsListView : KComposite() {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                h1("Suggested news")
+                title("Suggested news")
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.SINGLE)

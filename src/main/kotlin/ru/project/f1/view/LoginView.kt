@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import ru.project.f1.security.CustomRequestCache
 import ru.project.f1.utils.UiUtils.Companion.setLocation
-import ru.project.f1.utils.UiUtils.Companion.show
+import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.loginHeaderBar
 
 
@@ -53,7 +53,7 @@ class LoginView : KComposite() {
                         val url = requestCache.resolveRedirectUrl()
                         println(url)
                         setLocation(url)
-                        show("goto $url")
+                        successBox("goto $url")
                     }
 
                     Notification.show("Logged in")

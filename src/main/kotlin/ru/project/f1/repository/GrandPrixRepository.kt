@@ -9,15 +9,19 @@ import java.math.BigInteger
 @Repository
 interface GrandPrixRepository : JpaRepository<GrandPrix, BigInteger> {
 
-    @Query("from GrandPrix " +
-            "where extract(year from date) = :year " +
-            "group by fullName, id " +
-            "order by date")
+    @Query("""
+        from GrandPrix 
+        where extract(year from date) = :year 
+        group by fullName, id 
+        order by date
+    """)
     fun findAllGrandPrixByYear(year: Int): List<GrandPrix>
 
-    @Query("select distinct extract(year from date) as year " +
-            "from grand_prix " +
-            "order by year", nativeQuery = true)
+    @Query("""
+        select distinct extract(year from date) as year 
+        from grand_prix 
+        order by year
+    """, nativeQuery = true)
     fun findAllYears(): List<Int>
 
 }
