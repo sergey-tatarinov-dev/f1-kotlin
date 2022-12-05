@@ -96,3 +96,7 @@ databaseChangeLog:
   - include:
       file: changelog/20211125_insert_mexico_brazil_and_qatar_grand_prix_result.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221205_insert_saudi_arabian_and_abu_dhabi_grand_prix_result.sql
+      relativeToChangelogFile: true
