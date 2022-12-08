@@ -17,5 +17,9 @@ interface DriverService {
     @Transactional
     fun deleteById(id: BigInteger)
 
+    fun findAllDriversByYear(year: Int): List<Driver>
+
     fun findAll(pageable: Pageable): Page<Driver>
+
+    fun findAllDriverYears(): List<Int>
 }

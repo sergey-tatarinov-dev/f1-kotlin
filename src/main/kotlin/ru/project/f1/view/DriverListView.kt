@@ -8,12 +8,12 @@ import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.orderedlayout.FlexComponent
+import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import ru.project.f1.entity.Driver
 import ru.project.f1.service.DriverService
@@ -31,15 +31,23 @@ class DriverListView : HasImage() {
     private lateinit var driverService: DriverService
     private lateinit var grid: Grid<Driver>
     private lateinit var drivers: MutableList<Driver>
+    private lateinit var select: Select<String>
 
     val root = ui {
         verticalLayout {
             headerBar { }
             setSizeFull()
             verticalLayout {
-                alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
-                title("Drivers")
+                alignSelf = FlexComponent.Alignment.CENTER
+                horizontalLayout {
+                    style.set("margin-top", "0px")
+                    setWidthFull()
+                    title("Drivers")
+                    select = select {
+                        label = "Year"
+                    }
+                }
 
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
@@ -74,7 +82,19 @@ class DriverListView : HasImage() {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
-        drivers = driverService.findAll(PageRequest.of(0, 20)).toMutableList()
+        var year = driverService.findAllDriverYears().map { it.toString() }.last()
+        drivers = driverService.findAllDriversByYear(year.toInt()).toMutableList()
         grid.setItems(drivers)
+
+        select.apply {
+            val years = driverService.findAllDriverYears().map { it.toString() }.toMutableList()
+            setItems(years)
+            value = years.last()
+            addValueChangeListener {
+                if (it != null && it.value != null) {
+                    grid.setItems(driverService.findAllDriversByYear(it.value.toInt()).toMutableList())
+                }
+            }
+        }
     }
 }
