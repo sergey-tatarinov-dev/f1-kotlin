@@ -20,5 +20,9 @@ class DriverServiceImpl : DriverService {
 
     override fun deleteById(id: BigInteger) = driverRepository.deleteById(id)
 
+    override fun findAllDriversByYear(year: Int): List<Driver> = driverRepository.findAllDriversByYear(year)
+
     override fun findAll(pageable: Pageable) = driverRepository.findAll(pageable)
+
+    override fun findAllDriverYears(): List<Int> = driverRepository.findAllDriverYears()
 }
