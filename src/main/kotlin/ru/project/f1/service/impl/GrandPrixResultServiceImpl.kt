@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 import ru.project.f1.entity.GrandPrixResult
 import ru.project.f1.entity.GrandPrixResultPerDriver
 import ru.project.f1.entity.GrandPrixResultPerGrandPrix
+import ru.project.f1.entity.Team
 import ru.project.f1.repository.GrandPrixRepository
 import ru.project.f1.repository.GrandPrixResultRepository
 import ru.project.f1.service.GrandPrixResultService
@@ -99,9 +100,11 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
     }
 
     override fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerGrandPrix> =
-        grandPrixResultRepository.findAllByGrandPrixId(id)
+        grandPrixResultRepository.findAllGrandPrixResultByIdAndYear(id)
 
     override fun findAllByDriverId(id: Int): List<GrandPrixResultPerDriver> =
         grandPrixResultRepository.findAllByDriverId(id)
+
+    override fun findTeamByDriverId(id: BigInteger): Team = grandPrixResultRepository.findTeamByDriverId(id)[0]
 
 }

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import ru.project.f1.entity.GrandPrixResult
 import ru.project.f1.entity.GrandPrixResultPerDriver
 import ru.project.f1.entity.GrandPrixResultPerGrandPrix
+import ru.project.f1.entity.Team
 import java.math.BigInteger
 import java.util.*
 
@@ -28,4 +29,6 @@ interface GrandPrixResultService {
     fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerGrandPrix>
 
     fun findAllByDriverId(id: Int): List<GrandPrixResultPerDriver>
+
+    fun findTeamByDriverId(id: BigInteger): Team
 }

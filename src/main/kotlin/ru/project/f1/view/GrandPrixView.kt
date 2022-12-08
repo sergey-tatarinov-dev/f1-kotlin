@@ -103,11 +103,13 @@ class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
             }
         }.setHeader("Driver")
         addComponentColumn {
-            val image = imageById(it.logoId, it.teamName) {
+            val team = grandPrixResultService.findTeamByDriverId(it.driverId)
+            team.country
+            val image = imageById(team.file.id, team.name) {
                 height = "25px"
                 width = "25px"
             }
-            val text = Span(it.teamName).apply {
+            val text = Span(team.name).apply {
                 style.apply {
                     set("margin-left", "10px")
                     set("align-self", "center")
