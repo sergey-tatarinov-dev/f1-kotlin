@@ -100,3 +100,19 @@ databaseChangeLog:
   - include:
       file: changelog/20221205_insert_saudi_arabian_and_abu_dhabi_grand_prix_result.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221205_insert_file.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221205_insert_country.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221205_insert_drivers.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221205_insert_lineup_of_2022.sql
+      relativeToChangelogFile: true
