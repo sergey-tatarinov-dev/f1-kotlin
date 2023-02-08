@@ -116,3 +116,23 @@ databaseChangeLog:
   - include:
       file: changelog/20221205_insert_lineup_of_2022.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221208_insert_miami_circuit.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221208_insert_grand_prix_of_2022.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221208_insert_drivers_of_2022.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221208_add_lineup_of_2022.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20221208_insert_grand_prix_result_of_2022.sql
+      relativeToChangelogFile: true
