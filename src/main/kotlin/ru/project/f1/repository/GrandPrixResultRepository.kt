@@ -3,10 +3,7 @@ package ru.project.f1.repository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import ru.project.f1.entity.GrandPrixResult
-import ru.project.f1.entity.GrandPrixResultPerDriver
-import ru.project.f1.entity.GrandPrixResultPerGrandPrix
-import ru.project.f1.entity.Team
+import ru.project.f1.entity.*
 import java.math.BigInteger
 
 @Repository
@@ -35,10 +32,10 @@ interface GrandPrixResultRepository : JpaRepository<GrandPrixResult, BigInteger>
         select NEW ru.project.f1.entity.GrandPrixResultPerDriver(gp.id, gp.fullName, gpr.points) 
         from GrandPrixResult gpr
         inner join GrandPrix gp on gp.id = gpr.grandPrixResultId.grandPrixId 
-        where gpr.grandPrixResultId.driverId = :id
+        where gpr.grandPrixResultId.driverId = :id and extract(year from gp.date) = :year
         order by gpr.grandPrixResultId.driverId
     """)
-    fun findAllByDriverId(id: Int): List<GrandPrixResultPerDriver>
+    fun findAllByDriverIdAndYear(id: Int, year: Int): List<GrandPrixResultPerDriver>
 
     @Query("""
         select NEW ru.project.f1.entity.Team(t.id, t.fullName, t.name, t.country, t.file)
@@ -48,5 +45,12 @@ interface GrandPrixResultRepository : JpaRepository<GrandPrixResult, BigInteger>
         where d.id = :id
     """)
     fun findTeamByDriverId(id: BigInteger): List<Team>
+
+    @Query("""
+        from GrandPrixResult gpr
+        inner join GrandPrix gp on gp.id = gpr.grandPrix.id 
+        where extract(year from gp.date) = :year
+    """)
+    fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult>
 
 }

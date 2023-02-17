@@ -1,47 +1,45 @@
 package ru.project.f1.view
 
 import com.github.mvysny.karibudsl.v10.*
-import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.orderedlayout.FlexComponent
-import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.data.renderer.ComponentRenderer
-import com.vaadin.flow.data.renderer.NumberRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
-import ru.project.f1.entity.TeamStanding
-import ru.project.f1.service.GrandPrixResultService
-import ru.project.f1.service.GrandPrixService
-import ru.project.f1.service.TeamStandingsService
+import ru.project.f1.dto.LineUpDto
+import ru.project.f1.dto.PointsPerGrandPrixDto
+import ru.project.f1.dto.TeamStandingDto
+import ru.project.f1.service.*
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
-import java.text.NumberFormat
 
 @Route("constructor-standings")
 @Component
 @PageTitle("F1 | Constructor standings")
 @PreserveOnRefresh
 @UIScope
-class ConstructorStandingsView : StandingView() {
+class ConstructorStandingsView : AbstractStandingView<TeamStandingDto>() {
 
     @Autowired
-    private lateinit var grandPrixResultService: GrandPrixResultService
-    @Autowired
-    private lateinit var grandPrixService: GrandPrixService
+    private lateinit var driverService: DriverService
 
     @Autowired
-    private lateinit var teamStandingsService: TeamStandingsService
+    private lateinit var teamService: TeamService
 
-    private lateinit var teamStandings: List<TeamStanding>
-    private lateinit var grid: Grid<TeamStanding>
-    private lateinit var select: Select<String>
+    override lateinit var grid: Grid<TeamStandingDto>
+    override val renderer: ComponentRenderer<Anchor, TeamStandingDto>
+        get() = ComponentRenderer(::Anchor) { anchor: Anchor, teamStandingDto: TeamStandingDto ->
+            anchor.apply {
+                text = teamStandingDto.team.name
+                href = "/team/${teamStandingDto.team.id}"
+            }
+        }
 
     val root = ui {
         verticalLayout {
@@ -49,7 +47,7 @@ class ConstructorStandingsView : StandingView() {
             setSizeFull()
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
-                width = "65%"
+                width = "85%"
                 style.set("margin-top", "0px")
                 horizontalLayout {
                     style.set("margin-top", "0px")
@@ -68,30 +66,41 @@ class ConstructorStandingsView : StandingView() {
         }
     }
 
-    override fun onAttach(attachEvent: AttachEvent?) {
-        super.onAttach(attachEvent)
-        grandPrixResultService.createViews()
-        teamStandings = teamStandingsService.findAll(PageRequest.of(0, 25)).toMutableList()
-        grid.apply {
-            removeAllColumns()
-            setItems(teamStandings)
-            addColumns {
-                addColumn(ComponentRenderer(::Anchor) { anchor: Anchor, teamStanding: TeamStanding ->
-                    anchor.apply {
-                        text = teamStanding.name
-                        href = "/team/${teamStanding.id}"
-                    }
-                }).setHeader("Name")
-                columnFor(
-                    TeamStanding::sum,
-                    NumberRenderer(TeamStanding::sum, NumberFormat.getNumberInstance())
-                )
-            }
-        }
-        select.apply {
-            val years = grandPrixService.findAllYears().map { it.toString() }
-            setItems(years)
-            value = years.last()
+    override fun addPointsColumns(year: Int) {
+        getTeamGrandPrixResultDto(year)[0].grandPrixPoints.forEachIndexed { id, pointsPerGrandPrixDto ->
+            addPointsValueToGrid(id, pointsPerGrandPrixDto)
         }
     }
+
+    override fun getItems(year: Int): List<TeamStandingDto> = getTeamGrandPrixResultDto(year)
+
+    private fun getTeamGrandPrixResultDto(year: Int): List<TeamStandingDto> = driverService.findAllLineUpByYear(year)
+        .asSequence()
+        .map { itt ->
+            LineUpDto(
+                getAllGrandPrixResultOfYear(year).first { itt.lineUpId.driverId == it.driver.id.toInt() },
+                teamService.findById(itt.lineUpId.teamId.toBigInteger()).orElse(null),
+                itt.year
+            )
+        }
+        .groupBy({ it.team }, { it.driver.grandPrixPoints })
+        .map { itt ->
+            TeamStandingDto(
+                itt.key,
+                .0,
+                itt.value.flatMap { it.values }
+                    .sortedBy { it.grandPrix.id }
+                    .groupBy({ it.grandPrix }, { it.points })
+                    .map { PointsPerGrandPrixDto(it.key, it.value.sum()) }
+            )
+        }
+        .map {
+            TeamStandingDto(
+                it.team,
+                it.grandPrixPoints.sumOf(PointsPerGrandPrixDto::points),
+                it.grandPrixPoints
+            )
+        }
+        .sortedByDescending { it.totalPoints }
+        .toList()
 }

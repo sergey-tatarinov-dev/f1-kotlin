@@ -5,3 +5,7 @@
 [part~="header-cell"] ::slotted(vaadin-grid-cell-content) {
     padding: 4px;
 }
+
+td.bold {
+    font-weight: bold;
+}

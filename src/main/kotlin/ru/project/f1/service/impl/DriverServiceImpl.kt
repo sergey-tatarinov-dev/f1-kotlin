@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import ru.project.f1.entity.Driver
 import ru.project.f1.repository.DriverRepository
+import ru.project.f1.repository.LineUpRepository
 import ru.project.f1.service.DriverService
 import java.math.BigInteger
 
@@ -13,6 +14,9 @@ class DriverServiceImpl : DriverService {
 
     @Autowired
     private lateinit var driverRepository: DriverRepository
+
+    @Autowired
+    private lateinit var lineUpRepository: LineUpRepository
 
     override fun save(driver: Driver): Driver = driverRepository.save(driver)
 
@@ -25,4 +29,8 @@ class DriverServiceImpl : DriverService {
     override fun findAll(pageable: Pageable) = driverRepository.findAll(pageable)
 
     override fun findAllDriverYears(): List<Int> = driverRepository.findAllDriverYears()
+
+    override fun findDriverByNameAndSurname(name: String, surname: String): Driver = driverRepository.findDriverByNameAndSurname(name, surname)
+
+    override fun findAllLineUpByYear(year: Int) = lineUpRepository.findAllByYear(year)
 }

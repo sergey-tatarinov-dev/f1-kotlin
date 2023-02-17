@@ -29,4 +29,6 @@ interface DriverRepository : JpaRepository<Driver, BigInteger> {
         order by year
     """)
     fun findAllDriverYears(): List<Int>
+
+    fun findDriverByNameAndSurname(name: String, surname: String): Driver
 }

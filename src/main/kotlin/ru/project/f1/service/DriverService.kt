@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 import ru.project.f1.entity.Driver
+import ru.project.f1.entity.LineUp
 import java.math.BigInteger
 import java.util.*
 
@@ -22,4 +23,8 @@ interface DriverService {
     fun findAll(pageable: Pageable): Page<Driver>
 
     fun findAllDriverYears(): List<Int>
+
+    fun findDriverByNameAndSurname(name: String, surname: String): Driver
+
+    fun findAllLineUpByYear(year: Int): List<LineUp>
 }

@@ -6,10 +6,10 @@ import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.html.Anchor
-import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
+import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.data.renderer.NumberRenderer
 import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
@@ -20,6 +20,7 @@ import ru.project.f1.service.DriverService
 import ru.project.f1.service.GrandPrixResultService
 import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
+import ru.project.f1.view.fragment.HeaderBarFragment.Companion.title
 import java.text.NumberFormat
 import kotlin.reflect.KProperty1
 
@@ -27,7 +28,7 @@ import kotlin.reflect.KProperty1
 @Component
 @PreserveOnRefresh
 @UIScope
-class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
+class DriverView : BeforeEnterObserver, HasDynamicTitle, HasImage() {
 
     @Autowired
     private lateinit var driverService: DriverService
@@ -36,9 +37,10 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
     private lateinit var grandPrixResultService: GrandPrixResultService
     @Autowired
     private lateinit var grandPrixService: GrandPrixService
-    private lateinit var driverId: String
     private lateinit var titleLayout: HorizontalLayout
     private lateinit var grid: Grid<GrandPrixResultPerDriver>
+    private var yearSelect: Select<String> = Select()
+    private lateinit var driverId: String
     private lateinit var pageTitle: String
 
     private var renderer = { valueProvider: KProperty1<GrandPrixResultPerDriver, Double> ->
@@ -55,6 +57,12 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
             verticalLayout {
                 alignSelf = FlexComponent.Alignment.CENTER
                 width = "65%"
+                style.set("margin-top", "0px")
+                horizontalLayout {
+                    style.set("margin-top", "0px")
+                    setWidthFull()
+                    title("Constructors standings")
+                }
                 titleLayout = horizontalLayout {}
                 grid = grid {
                     setSelectionMode(Grid.SelectionMode.NONE)
@@ -66,20 +74,38 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
+
+        val years = grandPrixService.findAllYears().map { it.toString() }
+
+        yearSelect.apply {
+            setItems(years)
+            label = "Year"
+            value = years.last()
+            addValueChangeListener {
+                if (it != null && it.value != null) {
+                    updateView(it.value.toInt())
+                }
+            }
+        }
+
         val driver = driverService.findById(driverId.toBigInteger()).orElseThrow()
         pageTitle = "${driver.name} ${driver.surname.uppercase()}"
         titleLayout.apply {
+            style.set("margin-top", "0px")
+            setWidthFull()
             removeAll()
+            setWidthFull()
             add(
                 imageById(driver.country.f1File.id, "${driver.name} ${driver.surname}") {
                     height = "30px"
                     width = "45px"
                 },
-                H1(pageTitle)
+                title(pageTitle),
+                yearSelect
             )
         }
 
-        val grandPrixList = grandPrixResultService.findAllByDriverId(driverId.toInt())
+        updateView(yearSelect.value.toInt())
         grid.apply {
             removeAllColumns()
             addComponentColumn {
@@ -107,8 +133,14 @@ class DriverView : StandingView(), BeforeEnterObserver, HasDynamicTitle {
                 isSortable = false
                 textAlign = ColumnTextAlign.END
             }
-            setItems(grandPrixList)
             addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES)
+        }
+    }
+
+    fun updateView(year: Int) {
+        val grandPrixList = grandPrixResultService.findAllByDriverId(driverId.toInt(), year)
+        grid.apply {
+            setItems(grandPrixList)
         }
     }
 

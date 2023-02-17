@@ -136,3 +136,19 @@ databaseChangeLog:
   - include:
       file: changelog/20221208_insert_grand_prix_result_of_2022.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20230208_update_portuguese_grand_prix.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20230214_add_fastest_laps_of_2022_and_sprints.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20230214_update_calculate_points.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20230217_drop_views_and_functions.sql
+      relativeToChangelogFile: true

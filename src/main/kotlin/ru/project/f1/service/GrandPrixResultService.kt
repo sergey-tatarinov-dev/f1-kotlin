@@ -24,11 +24,11 @@ interface GrandPrixResultService {
 
     fun findDistinctByGrandPrixId(): List<BigInteger>
 
-    fun createViews()
-
     fun findAllByGrandPrixId(id: Int): List<GrandPrixResultPerGrandPrix>
 
-    fun findAllByDriverId(id: Int): List<GrandPrixResultPerDriver>
+    fun findAllByDriverId(id: Int, year: Int): List<GrandPrixResultPerDriver>
 
     fun findTeamByDriverId(id: BigInteger): Team
+
+    fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult>
 }
