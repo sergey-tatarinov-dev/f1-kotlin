@@ -53,4 +53,13 @@ interface GrandPrixResultRepository : JpaRepository<GrandPrixResult, BigInteger>
     """)
     fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult>
 
+    @Query("""
+        select distinct extract(year from date) as year  
+        from grand_prix gp inner join grand_prix_result gpr on gp.id = gpr.grand_prix_id
+        order by year
+        """,
+        nativeQuery = true
+    )
+    fun findAllYears(): List<Int>
+
 }

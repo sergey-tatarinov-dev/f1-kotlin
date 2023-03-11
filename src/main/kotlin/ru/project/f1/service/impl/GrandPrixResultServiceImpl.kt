@@ -40,4 +40,6 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
 
     override fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult> = grandPrixResultRepository.findAllGrandPrixResultByYear(year)
 
+    override fun findAllYears(): List<Int> = grandPrixResultRepository.findAllYears()
+
 }

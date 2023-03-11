@@ -152,3 +152,7 @@ databaseChangeLog:
   - include:
       file: changelog/20230217_drop_views_and_functions.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20230311_add_drivers_and_lineup_for_2023.sql
+      relativeToChangelogFile: true

@@ -29,7 +29,7 @@ abstract class AbstractStandingView<T> : HasImage() where T : StandingDto {
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
 
-        val years = grandPrixService.findAllYears().map { it.toString() }
+        val years = grandPrixResultService.findAllYears().map { it.toString() }
         updateGrid(years.last().toInt())
 
         select.apply {

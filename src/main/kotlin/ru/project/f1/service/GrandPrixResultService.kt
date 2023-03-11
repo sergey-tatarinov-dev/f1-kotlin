@@ -31,4 +31,6 @@ interface GrandPrixResultService {
     fun findTeamByDriverIdAndYear(id: BigInteger, year: Int): Team
 
     fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult>
+
+    fun findAllYears(): List<Int>
 }
