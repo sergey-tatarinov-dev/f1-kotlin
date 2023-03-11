@@ -62,7 +62,7 @@ class GrandPrixListView : HasImage() {
                     setWidthFull()
                     title("Grand Prix")
                     if (isUserLoggedIn() && isAdminOrModerator()) {
-                        button("Add Grand Prix") {
+                        button("Add a Grand Prix") {
                             onLeftClick {
                                 grandPrixDialog.openAndThen(CREATE) {
                                     updateView()

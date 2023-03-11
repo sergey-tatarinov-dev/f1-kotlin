@@ -15,7 +15,7 @@ import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.notification.NotificationVariant
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.select.Select
-import com.vaadin.flow.component.textfield.NumberField
+import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.server.Command
 
@@ -75,7 +75,7 @@ class UiUtils {
             UI.getCurrent().page.setLocation(url)
         }
 
-        fun NumberField.notNull(): Boolean = this.value != null
+        fun IntegerField.notNull(): Boolean = this.value != null
         fun TextField.notNull(): Boolean = this.value != null && this.value.isNotEmpty()
         fun <T> Select<T>.notNull(): Boolean = this.value != null
         fun DatePicker.notNull(): Boolean = this.value != null

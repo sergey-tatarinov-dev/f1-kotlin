@@ -2,17 +2,16 @@ package ru.project.f1.view.fragment
 
 import com.github.mvysny.karibudsl.v10.VaadinDsl
 import com.github.mvysny.karibudsl.v10.init
-import com.github.mvysny.karibudsl.v10.numberField
+import com.github.mvysny.karibudsl.v10.integerField
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.html.Paragraph
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.textfield.NumberField
+import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.value.ValueChangeMode
-import ru.project.f1.utils.UiUtils
 
 class Components {
 
@@ -35,19 +34,19 @@ class Components {
         }
 
         @VaadinDsl
-        fun (@VaadinDsl HasComponents).numberField1(
+        fun (@VaadinDsl HasComponents).integerField1(
             label: String = "",
             placeholder: String = "",
-            valueChangeListener: (event: AbstractField.ComponentValueChangeEvent<NumberField, Double>) -> Unit = {},
-            block: (@VaadinDsl NumberField).() -> Unit = {}
-        ): NumberField {
-            val numberField: NumberField = numberField(label).apply {
+            valueChangeListener: (event: AbstractField.ComponentValueChangeEvent<IntegerField, Int>) -> Unit = {},
+            block: (@VaadinDsl IntegerField).() -> Unit = {}
+        ): IntegerField {
+            val integerField: IntegerField = integerField(label).apply {
                 setWidthFull()
                 valueChangeMode = ValueChangeMode.EAGER
                 this.placeholder = placeholder
                 addValueChangeListener(valueChangeListener)
             }
-            return init(numberField, block)
+            return init(integerField, block)
         }
 
         fun createParagraph(value: String): Paragraph {

@@ -1,9 +1,6 @@
 package ru.project.f1.view.dialog
 
-import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.horizontalLayout
-import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.github.mvysny.karibudsl.v10.select
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.component.textfield.IntegerField
@@ -12,10 +9,11 @@ import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
+import ru.project.f1.entity.Action
 import ru.project.f1.entity.Country
-import ru.project.f1.entity.Track
+import ru.project.f1.entity.Driver
 import ru.project.f1.service.CountryService
-import ru.project.f1.service.TrackService
+import ru.project.f1.service.DriverService
 import ru.project.f1.utils.UiUtils.Companion.notNull
 import ru.project.f1.utils.UiUtils.Companion.successBox
 import ru.project.f1.view.fragment.Components.Companion.integerField1
@@ -25,22 +23,22 @@ import javax.annotation.PostConstruct
 
 @Component
 @UIScope
-class TrackDialog : ConfirmDialog() {
-
-    @Autowired
-    private lateinit var countryDialog: CountryDialog
+class DriverDialog: ConfirmDialog() {
 
     @Autowired
     private lateinit var countryService: CountryService
-
     @Autowired
-    private lateinit var trackService: TrackService
-    private lateinit var circuitNameTextField: TextField
-    private lateinit var trackLengthNumberField: IntegerField
-    private lateinit var lapCountNumberField: IntegerField
+    private lateinit var driverService: DriverService
+    @Autowired
+    private lateinit var countryDialog: CountryDialog
+    private lateinit var driverNameTextField: TextField
+    private lateinit var driverSurnameTextField: TextField
+    private lateinit var driverRaceNumberField: IntegerField
     private lateinit var countrySelect: Select<Country>
-    private lateinit var consumer: Consumer<Track>
-    private var savedTrack: Track? = null
+    private lateinit var consumer: Consumer<Driver>
+    private var action: Action? = null
+    private var editableDriver: Driver? = null
+    private var savedDriver: Driver? = null
 
     @PostConstruct
     fun init() {
@@ -48,14 +46,14 @@ class TrackDialog : ConfirmDialog() {
     }
 
     fun content(): VerticalLayout {
-        return confirmDialog("Add a Track", {
-            circuitNameTextField = textField1("Circuit name", "Enter circuit name", {
+        return confirmDialog("Add a Driver", {
+            driverNameTextField = textField1("Driver name", "Enter driver's name", {
                 saveButton.isEnabled = allFieldsNotNull()
             })
-            trackLengthNumberField = integerField1("Track length", "Enter track length", {
+            driverSurnameTextField = textField1("Driver surname", "Enter driver's surname", {
                 saveButton.isEnabled = allFieldsNotNull()
             })
-            lapCountNumberField = integerField1("Lap count", "Enter lap count", {
+            driverRaceNumberField = integerField1 ("Race number", "Enter driver's race number", {
                 saveButton.isEnabled = allFieldsNotNull()
             })
             horizontalLayout {
@@ -79,38 +77,45 @@ class TrackDialog : ConfirmDialog() {
                 }
             }
         }, {
-            val totalMileage: Int = lapCountNumberField.value * trackLengthNumberField.value
-            val range = 305_000..310_000
-            if (totalMileage in range) {
-                savedTrack = trackService.save(
-                    Track(
-                        circuitName = circuitNameTextField.value,
-                        length = trackLengthNumberField.value.toInt(),
-                        lapCount = lapCountNumberField.value.toInt(),
-                        country = countrySelect.value
-                    )
-                )
-                consumer.accept(savedTrack!!)
-                successBox("Track has been successfully saved")
-                close()
+            val driver = Driver(
+                name = driverNameTextField.value,
+                surname = driverSurnameTextField.value,
+                raceNumber = driverRaceNumberField.value.toInt(),
+                country = countrySelect.value
+            )
+            if (action == Action.EDIT) {
+                driver.apply {
+                    id = editableDriver!!.id
+                }
             }
+            savedDriver = driverService.save(driver)
+            consumer.accept(savedDriver!!)
+            successBox("Driver has been successfully ${if (action == Action.EDIT) "edited" else "saved"}")
+            close()
         })
     }
 
     fun allFieldsNotNull(): Boolean =
-        circuitNameTextField.notNull() && trackLengthNumberField.notNull() &&
-                lapCountNumberField.notNull() && countrySelect.notNull()
+        driverNameTextField.notNull() && driverSurnameTextField.notNull() && driverRaceNumberField.notNull() && countrySelect.notNull()
 
-    fun openAndThen(cons: Consumer<Track>) {
+    fun openAndThen(act: Action, driver: Driver? = null, cons: Consumer<Driver>) {
+        action = act
+        if (action == Action.EDIT) {
+            driverNameTextField.value = driver?.name
+            driverSurnameTextField.value = driver?.surname
+            driverRaceNumberField.value = driver?.raceNumber
+            countrySelect.value = driver?.country
+        }
+        editableDriver = driver
         consumer = cons
         open()
     }
 
     override fun close() {
         super.close()
-        circuitNameTextField.clear()
-        trackLengthNumberField.clear()
-        lapCountNumberField.clear()
+        driverNameTextField.clear()
+        driverSurnameTextField.clear()
+        driverRaceNumberField.clear()
         countrySelect.clear()
     }
 }
