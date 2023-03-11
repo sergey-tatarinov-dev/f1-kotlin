@@ -106,7 +106,7 @@ class GrandPrixListView : HasImage() {
                     style.set("display", "inline-flex")
                 }
             }.apply {
-                flexGrow = 3
+                flexGrow = 5
             }
             addComponentColumn {
                 Span(it.track.circuitName)
@@ -115,7 +115,7 @@ class GrandPrixListView : HasImage() {
             }
             columnFor(createdDateRef, renderer) {
                 isSortable = false
-                flexGrow = 3
+                flexGrow = 1
                 textAlign = ColumnTextAlign.END
                 setHeader("")
                 setWidthFull()

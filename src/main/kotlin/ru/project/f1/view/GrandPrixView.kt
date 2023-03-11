@@ -14,7 +14,9 @@ import com.vaadin.flow.router.*
 import com.vaadin.flow.spring.annotation.UIScope
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import ru.project.f1.entity.GrandPrix
 import ru.project.f1.entity.GrandPrixResultPerGrandPrix
+import ru.project.f1.service.CountryService
 import ru.project.f1.service.GrandPrixResultService
 import ru.project.f1.service.GrandPrixService
 import ru.project.f1.view.fragment.HeaderBarFragment.Companion.headerBar
@@ -27,6 +29,8 @@ class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
 
     @Autowired
     private lateinit var grandPrixResultService: GrandPrixResultService
+    @Autowired
+    private lateinit var countryService: CountryService
     @Autowired
     private lateinit var grandPrixService: GrandPrixService
     private lateinit var grandPrixId: String
@@ -52,14 +56,14 @@ class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
-        val grandPrixList = grandPrixResultService.findAllByGrandPrixId(grandPrixId.toInt())
+        val grandPrixResultPerGrandPrixList = grandPrixResultService.findAllByGrandPrixId(grandPrixId.toInt())
+        val grandPrix = grandPrixService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
         grid.apply {
             removeAllColumns()
-            addMyColumns()
+            addMyColumns(grandPrix)
             addThemeVariants(LUMO_NO_BORDER, LUMO_NO_ROW_BORDERS, LUMO_ROW_STRIPES)
-            setItems(grandPrixList)
+            setItems(grandPrixResultPerGrandPrixList)
         }
-        val grandPrix = grandPrixService.findGrandPrixById(grandPrixId.toBigInteger()).orElseThrow()
         pageTitle = "${grandPrix.fullName} ${grandPrix.date.year}"
         val country = grandPrix.track.country
         titleLayout.apply {
@@ -80,14 +84,15 @@ class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
 
     override fun getPageTitle(): String = pageTitle
 
-    fun Grid<GrandPrixResultPerGrandPrix>.addMyColumns() {
+    fun Grid<GrandPrixResultPerGrandPrix>.addMyColumns(grandPrix: GrandPrix) {
         columnFor(GrandPrixResultPerGrandPrix::position) {
             isSortable = false
             isExpand = false
         }
 
         addComponentColumn {
-            val image = imageById(it.countryId, it.driverName) {
+            val country = countryService.findById(it.countryId).orElseThrow()
+            val image = imageById(country.f1File.id, it.driverName) {
                 height = "20px"
                 width = "30px"
             }
@@ -103,7 +108,7 @@ class GrandPrixView : HasImage(), BeforeEnterObserver, HasDynamicTitle {
             }
         }.setHeader("Driver")
         addComponentColumn {
-            val team = grandPrixResultService.findTeamByDriverId(it.driverId)
+            val team = grandPrixResultService.findTeamByDriverIdAndYear(it.driverId, grandPrix.date.year)
             team.country
             val image = imageById(team.file.id, team.name) {
                 height = "25px"

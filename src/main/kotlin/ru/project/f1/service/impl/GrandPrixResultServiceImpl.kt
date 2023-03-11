@@ -36,7 +36,7 @@ class GrandPrixResultServiceImpl : GrandPrixResultService {
     override fun findAllByDriverId(id: Int, year: Int): List<GrandPrixResultPerDriver> =
         grandPrixResultRepository.findAllByDriverIdAndYear(id, year)
 
-    override fun findTeamByDriverId(id: BigInteger): Team = grandPrixResultRepository.findTeamByDriverId(id)[0]
+    override fun findTeamByDriverIdAndYear(id: BigInteger, year: Int): Team = grandPrixResultRepository.findTeamByDriverIdAndYear(id, year)[0]
 
     override fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult> = grandPrixResultRepository.findAllGrandPrixResultByYear(year)
 

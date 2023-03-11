@@ -28,7 +28,7 @@ interface GrandPrixResultService {
 
     fun findAllByDriverId(id: Int, year: Int): List<GrandPrixResultPerDriver>
 
-    fun findTeamByDriverId(id: BigInteger): Team
+    fun findTeamByDriverIdAndYear(id: BigInteger, year: Int): Team
 
     fun findAllGrandPrixResultByYear(year: Int): List<GrandPrixResult>
 }

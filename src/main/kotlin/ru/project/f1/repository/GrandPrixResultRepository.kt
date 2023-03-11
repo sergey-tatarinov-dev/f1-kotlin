@@ -42,9 +42,9 @@ interface GrandPrixResultRepository : JpaRepository<GrandPrixResult, BigInteger>
         from Team t
         inner join LineUp lu on t.id = lu.lineUpId.teamId
         inner join Driver d on d.id = lu.lineUpId.driverId
-        where d.id = :id
+        where d.id = :id and lu.year = :year
     """)
-    fun findTeamByDriverId(id: BigInteger): List<Team>
+    fun findTeamByDriverIdAndYear(id: BigInteger, year: Int): List<Team>
 
     @Query("""
         from GrandPrixResult gpr
